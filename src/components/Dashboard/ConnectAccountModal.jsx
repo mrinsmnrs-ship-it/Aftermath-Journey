@@ -35,6 +35,7 @@ export default function ConnectAccountModal({ open, onClose, onConnect }) {
           <h2>Connect Account</h2>
           <button className="btn modal-close" onClick={handleClose} aria-label="Tutup">✕</button>
         </div>
+        <div className="modal-body">
         <div className="modal-sub">Hubungkan akun MT4/MT5 kamu lewat MetaApi. Sekali connect, data auto-sync.</div>
 
         <form onSubmit={handleSubmit}>
@@ -91,6 +92,7 @@ export default function ConnectAccountModal({ open, onClose, onConnect }) {
         </form>
 
         <div className="security-note">🔒 Token disimpan terenkripsi di server. Kamu bisa putuskan koneksi kapan saja.</div>
+        </div>
       </div>
     </div>
   );
