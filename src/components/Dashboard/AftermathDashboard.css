@@ -187,8 +187,9 @@
 .aftermath-dashboard .modal-overlay.open{ display:flex; }
 .aftermath-dashboard .modal-card{
   background:var(--card); border:var(--border-w) solid var(--stroke);
-  border-radius:20px 20px 0 0; padding:22px; width:100%; max-width:480px;
-  max-height:88vh; overflow-y:auto; position:relative;
+  border-radius:20px 20px 0 0; padding:0; width:100%; max-width:480px;
+  max-height:88vh; position:relative; overflow:hidden;
+  display:flex; flex-direction:column;
 }
 @media (min-width:640px){
   .aftermath-dashboard .modal-overlay{ align-items:center; }
@@ -196,11 +197,29 @@
 }
 .aftermath-dashboard .modal-overlay.modal-center{ align-items:center; padding:20px; }
 .aftermath-dashboard .modal-overlay.modal-center .modal-card{ border-radius:var(--radius); max-width:400px; }
-.aftermath-dashboard .modal-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:4px; }
+
+/* Header tetap nempel di atas, nggak ikut ke-scroll bareng isi form. */
+.aftermath-dashboard .modal-head{
+  display:flex; align-items:center; justify-content:space-between;
+  flex-shrink:0; padding:22px 22px 4px; margin-bottom:0;
+  background:var(--card); position:relative; z-index:1;
+}
 .aftermath-dashboard .modal-head h2{ font-size:18px; }
 .aftermath-dashboard .modal-close{
   width:32px; height:32px; padding:0; border-radius:50%;
   display:flex; align-items:center; justify-content:center; font-size:16px; line-height:1;
+}
+
+/* Area yang scroll: dikasih padding sendiri + scrollbar custom biar sudut modal tetap rounded. */
+.aftermath-dashboard .modal-body{
+  flex:1 1 auto; min-height:0; overflow-y:auto;
+  padding:0 22px 22px;
+  scrollbar-width:thin; scrollbar-color: var(--stroke) transparent;
+}
+.aftermath-dashboard .modal-body::-webkit-scrollbar{ width:8px; }
+.aftermath-dashboard .modal-body::-webkit-scrollbar-track{ background:transparent; }
+.aftermath-dashboard .modal-body::-webkit-scrollbar-thumb{
+  background:var(--stroke); border-radius:999px; border:2px solid var(--card); background-clip:padding-box;
 }
 .aftermath-dashboard .modal-sub{ font-size:12px; color:var(--ink); opacity:.65; margin-bottom:18px; }
 
