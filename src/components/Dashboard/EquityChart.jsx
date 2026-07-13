@@ -27,7 +27,7 @@ function smoothPath(points) {
 }
 
 export default function EquityChart({ slice }) {
-  const { path, areaPath } = useMemo(() => {
+  const { path, isUp } = useMemo(() => {
     const vals = slice.map((p) => p.balance);
     const min = Math.min(...vals);
     const max = Math.max(...vals);
@@ -41,21 +41,18 @@ export default function EquityChart({ slice }) {
     });
 
     const line = smoothPath(pts);
-    const lastX = pts[pts.length - 1] ? pts[pts.length - 1][0] : VIEW_W;
-    const firstX = pts[0] ? pts[0][0] : 0;
-    const area = `${line} L${lastX.toFixed(1)},${VIEW_H} L${firstX.toFixed(1)},${VIEW_H} Z`;
+    const up = vals.length ? vals[vals.length - 1] >= vals[0] : true;
 
-    return { path: line, areaPath: area };
+    return { path: line, isUp: up };
   }, [slice]);
 
   return (
     <div className="chart-wrap">
       <svg viewBox={`0 0 ${VIEW_W} ${VIEW_H}`} preserveAspectRatio="none">
-        <path d={areaPath} fill="var(--profit-tint)" stroke="none" />
         <path
           d={path}
           fill="none"
-          stroke="var(--ink)"
+          stroke={isUp ? 'var(--profit-dark)' : 'var(--loss-dark)'}
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
