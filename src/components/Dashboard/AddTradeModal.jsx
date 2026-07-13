@@ -126,6 +126,7 @@ export default function AddTradeModal({ open, onClose, onAddTrade }) {
           <h2>Input Trade Manual</h2>
           <button className="btn modal-close" onClick={handleClose} aria-label="Tutup">✕</button>
         </div>
+        <div className="modal-body">
         <div className="modal-sub">Catat trade yang belum ke-sync otomatis dari broker.</div>
 
         <form onSubmit={handleSubmit}>
@@ -167,27 +168,25 @@ export default function AddTradeModal({ open, onClose, onAddTrade }) {
           </div>
 
           <div className="field-section-title">Waktu</div>
-          <div className="field-row">
-            <div className="field">
-              <label htmlFor="tOpen">Waktu Buka</label>
-              <input
-                type="datetime-local"
-                id="tOpen"
-                value={form.openTime}
-                onChange={set('openTime')}
-                required
-              />
-            </div>
-            <div className="field">
-              <label htmlFor="tClose">Waktu Tutup</label>
-              <input
-                type="datetime-local"
-                id="tClose"
-                value={form.closeTime}
-                onChange={set('closeTime')}
-                required
-              />
-            </div>
+          <div className="field">
+            <label htmlFor="tOpen">Waktu Buka</label>
+            <input
+              type="datetime-local"
+              id="tOpen"
+              value={form.openTime}
+              onChange={set('openTime')}
+              required
+            />
+          </div>
+          <div className="field">
+            <label htmlFor="tClose">Waktu Tutup</label>
+            <input
+              type="datetime-local"
+              id="tClose"
+              value={form.closeTime}
+              onChange={set('closeTime')}
+              required
+            />
           </div>
 
           <div className="field-section-title">Harga</div>
@@ -295,6 +294,7 @@ export default function AddTradeModal({ open, onClose, onAddTrade }) {
 
           <button type="submit" className="btn btn-accent submit-btn">Simpan Trade</button>
         </form>
+        </div>
       </div>
     </div>
   );
