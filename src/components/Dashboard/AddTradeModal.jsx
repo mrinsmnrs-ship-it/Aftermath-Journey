@@ -135,7 +135,6 @@ export default function AddTradeModal({ open, onClose, onAddTrade }) {
             <input
               type="text"
               id="tPair"
-              placeholder="cth. EURUSD"
               value={form.pair}
               onChange={set('pair')}
               required
@@ -160,7 +159,6 @@ export default function AddTradeModal({ open, onClose, onAddTrade }) {
               type="number"
               step="0.01"
               id="tSize"
-              placeholder="cth. 0.50"
               value={form.size}
               onChange={set('size')}
               required
@@ -197,7 +195,6 @@ export default function AddTradeModal({ open, onClose, onAddTrade }) {
                 type="number"
                 step="any"
                 id="tEntry"
-                placeholder="cth. 1.0850"
                 value={form.entryPrice}
                 onChange={set('entryPrice')}
                 required
@@ -209,7 +206,6 @@ export default function AddTradeModal({ open, onClose, onAddTrade }) {
                 type="number"
                 step="any"
                 id="tExit"
-                placeholder="cth. 1.0920"
                 value={form.exitPrice}
                 onChange={set('exitPrice')}
                 required
@@ -223,7 +219,6 @@ export default function AddTradeModal({ open, onClose, onAddTrade }) {
                 type="number"
                 step="any"
                 id="tSl"
-                placeholder="cth. 1.0800"
                 value={form.sl}
                 onChange={set('sl')}
               />
@@ -234,7 +229,6 @@ export default function AddTradeModal({ open, onClose, onAddTrade }) {
                 type="number"
                 step="any"
                 id="tTp"
-                placeholder="cth. 1.0950"
                 value={form.tp}
                 onChange={set('tp')}
               />
@@ -251,7 +245,6 @@ export default function AddTradeModal({ open, onClose, onAddTrade }) {
               type="number"
               step="0.01"
               id="tPlGross"
-              placeholder="cth. 45.20 atau -30"
               value={form.plGross}
               onChange={set('plGross')}
               required
@@ -265,7 +258,6 @@ export default function AddTradeModal({ open, onClose, onAddTrade }) {
                 type="number"
                 step="0.01"
                 id="tCommission"
-                placeholder="cth. -3.50"
                 value={form.commission}
                 onChange={set('commission')}
               />
@@ -276,7 +268,6 @@ export default function AddTradeModal({ open, onClose, onAddTrade }) {
                 type="number"
                 step="0.01"
                 id="tSwap"
-                placeholder="cth. -1.20 atau 0.80"
                 value={form.swap}
                 onChange={set('swap')}
               />
