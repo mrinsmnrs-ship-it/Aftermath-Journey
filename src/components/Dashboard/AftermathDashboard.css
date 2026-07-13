@@ -11,6 +11,7 @@
   --loss-tint:#FCE4E2;
   --loss-dark:#B33327;
   --accent:#FFD23F;
+  --login-blue:#3D6EF0;
   --muted:#767672;
   --line-soft:#E4E4DE;
   --border-w:1.5px;
@@ -74,6 +75,13 @@
 .aftermath-dashboard .btn:hover{ transform:translate(-2px,-2px); box-shadow:5px 5px 0 var(--stroke); }
 .aftermath-dashboard .btn:active{ transform:translate(3px,3px); box-shadow:0 0 0 var(--stroke); }
 .aftermath-dashboard .btn-accent{ background:var(--accent); color:#111111; }
+
+.aftermath-dashboard .btn-square{
+  display:inline-flex; align-items:center; justify-content:center;
+  width:38px; height:38px; padding:0; flex-shrink:0;
+  background:var(--login-blue); color:#FFFFFF;
+}
+.aftermath-dashboard .btn-square svg{ width:18px; height:18px; }
 
 /* ---- Account switch popup ---- */
 .aftermath-dashboard .acct-list{ display:flex; flex-direction:column; gap:9px; margin-top:4px; }
@@ -271,4 +279,12 @@
 .aftermath-dashboard .security-note{
   display:flex; gap:8px; align-items:flex-start; margin-top:16px; padding:11px 12px;
   border:1px solid var(--line-soft); border-radius:10px; font-size:11px; color:var(--ink); line-height:1.5;
+}
+
+.aftermath-dashboard .login-switch{
+  text-align:center; margin-top:16px; font-size:12px; color:var(--muted);
+}
+.aftermath-dashboard .login-switch button{
+  background:none; border:none; padding:0; margin-left:4px; cursor:pointer;
+  font-size:12px; font-weight:700; color:var(--login-blue); text-decoration:underline;
 }
