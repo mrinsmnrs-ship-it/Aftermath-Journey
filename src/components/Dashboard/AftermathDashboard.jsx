@@ -205,7 +205,7 @@ export default function AftermathDashboard() {
                       <td>{t.pair}</td>
                       <td><span className={`tag ${t.dir === 'BUY' ? 'tag-buy' : 'tag-sell'}`}>{t.dir}</span></td>
                       <td>{t.size}</td>
-                      <td>{fmtSigned(t.pl)}</td>
+                      <td className={t.pl >= 0 ? 'pl-up' : 'pl-down'}>{fmtSigned(t.pl)}</td>
                       <td className="src-auto">{t.src}</td>
                     </tr>
                   ))
