@@ -44,7 +44,6 @@ export default function ConnectAccountModal({ open, onClose, onConnect }) {
             <input
               type="text"
               id="fNickname"
-              placeholder="cth. FTMO Challenge #83"
               value={nickname}
               onChange={(e) => setNickname(e.target.value)}
               required
@@ -68,7 +67,6 @@ export default function ConnectAccountModal({ open, onClose, onConnect }) {
             <input
               type="text"
               id="fAccountId"
-              placeholder="cth. 8a2f9c1e-..."
               value={accountId}
               onChange={(e) => setAccountId(e.target.value)}
               required
@@ -80,7 +78,6 @@ export default function ConnectAccountModal({ open, onClose, onConnect }) {
             <input
               type="password"
               id="fToken"
-              placeholder="Token dari MetaApi dashboard"
               value={token}
               onChange={(e) => setToken(e.target.value)}
               required
