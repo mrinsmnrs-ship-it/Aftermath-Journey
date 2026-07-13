@@ -26,6 +26,10 @@ export function genAccount(id, name, type, startBalance, seed, winBias) {
       const pl = isWin
         ? +(rand() * 140 + 20).toFixed(2)
         : -(rand() * 90 + 15).toFixed(2);
+      // risk = dollar amount risked on this specific entry (entry-to-stop distance x size),
+      // generated independently of pl to simulate real trades where position sizing varies per entry.
+      const risk = +(rand() * 120 + 30).toFixed(2);
+      const r = +(pl / risk).toFixed(2);
       bal += pl;
       trades.push({
         date: d.toISOString().slice(0, 10),
@@ -33,6 +37,8 @@ export function genAccount(id, name, type, startBalance, seed, winBias) {
         dir: rand() > 0.5 ? 'BUY' : 'SELL',
         size: (rand() * 2 + 0.1).toFixed(2),
         pl,
+        risk,
+        r,
         src: rand() > 0.15 ? 'auto' : 'manual',
       });
     }
