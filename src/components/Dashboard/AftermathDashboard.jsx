@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import EquityChart from './EquityChart';
 import AccountSwitchModal from './AccountSwitchModal';
 import ConnectAccountModal from './ConnectAccountModal';
+import AddTradeModal from './AddTradeModal';
 import { generateInitialAccounts, genAccount, fmtMoney, fmtSigned } from '../../utils/mockAccountData';
 import './AftermathDashboard.css';
 
@@ -18,6 +19,7 @@ export default function AftermathDashboard() {
   const [currentPeriod, setCurrentPeriod] = useState(30);
   const [acctModalOpen, setAcctModalOpen] = useState(false);
   const [connectModalOpen, setConnectModalOpen] = useState(false);
+  const [addTradeModalOpen, setAddTradeModalOpen] = useState(false);
 
   const currentAccount = accounts.find((a) => a.id === currentAcctId) ?? accounts[0];
 
@@ -75,6 +77,31 @@ export default function AftermathDashboard() {
     setConnectModalOpen(false);
   }
 
+  function handleAddTrade(trade) {
+    setAccounts((prev) =>
+      prev.map((acc) => {
+        if (acc.id !== currentAcctId) return acc;
+
+        // Selipkan trade baru sesuai urutan tanggal (data tersimpan ascending).
+        const trades = [...acc.trades, trade].sort((a, b) => a.date.localeCompare(b.date));
+
+        // Update kurva equity: kalau tanggalnya sama dengan titik terakhir, tambahkan
+        // saldonya di titik itu; kalau tanggal baru, tambah titik baru di ujung.
+        const equity = [...acc.equity];
+        const lastPoint = equity[equity.length - 1];
+        if (lastPoint && lastPoint.date === trade.date) {
+          lastPoint.balance = +(lastPoint.balance + trade.pl).toFixed(2);
+        } else {
+          const prevBal = lastPoint ? lastPoint.balance : 0;
+          equity.push({ date: trade.date, balance: +(prevBal + trade.pl).toFixed(2) });
+        }
+
+        return { ...acc, trades, equity };
+      })
+    );
+    setAddTradeModalOpen(false);
+  }
+
   return (
     <div className="aftermath-dashboard">
       <div className="wrap">
@@ -84,6 +111,7 @@ export default function AftermathDashboard() {
             <h1>AFTRMTH JRNY</h1>
           </div>
           <div className="header-actions">
+            <button className="btn" type="button" onClick={() => setAddTradeModalOpen(true)}>+ Input Trade</button>
             <button className="acct-switch-btn" type="button" onClick={() => setAcctModalOpen(true)}>
               <span>{currentAccount.name}</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
@@ -202,6 +230,12 @@ export default function AftermathDashboard() {
         open={connectModalOpen}
         onClose={() => setConnectModalOpen(false)}
         onConnect={handleConnect}
+      />
+
+      <AddTradeModal
+        open={addTradeModalOpen}
+        onClose={() => setAddTradeModalOpen(false)}
+        onAddTrade={handleAddTrade}
       />
     </div>
   );
