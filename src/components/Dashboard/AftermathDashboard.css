@@ -6,8 +6,10 @@
   --card:#FFFFFF;
   --profit:#17A672;
   --profit-tint:#DFF5EC;
+  --profit-dark:#0D7A54;
   --loss:#E8483D;
   --loss-tint:#FCE4E2;
+  --loss-dark:#B33327;
   --accent:#FFD23F;
   --muted:#767672;
   --line-soft:#E4E4DE;
@@ -118,8 +120,8 @@
   padding:5px 10px; border-radius:20px; border:var(--border-w) solid var(--stroke);
   margin-top:8px;
 }
-.aftermath-dashboard .delta-up{ background:var(--profit-tint); color:var(--ink); }
-.aftermath-dashboard .delta-down{ background:var(--loss-tint); color:var(--ink); }
+.aftermath-dashboard .delta-up{ background:var(--profit-tint); color:var(--profit-dark); }
+.aftermath-dashboard .delta-down{ background:var(--loss-tint); color:var(--loss-dark); }
 
 .aftermath-dashboard .period-toggle{ display:flex; gap:8px; height:fit-content; }
 .aftermath-dashboard .period-toggle button{
@@ -144,8 +146,10 @@
 .aftermath-dashboard .metric-label{ font-size:11px; color:var(--ink); text-transform:uppercase; letter-spacing:.06em; font-weight:600; margin-bottom:8px; }
 .aftermath-dashboard .metric-value{ font-size:22px; font-weight:700; color:var(--ink); }
 .aftermath-dashboard .metric-sub{ font-size:11px; color:var(--ink); margin-top:4px; }
-.aftermath-dashboard .metric-card.tone-profit{ background:var(--profit-tint); border-color:var(--stroke); }
-.aftermath-dashboard .metric-card.tone-loss{ background:var(--loss-tint); border-color:var(--stroke); }
+.aftermath-dashboard .metric-card.tone-profit{ background:var(--card); border-color:var(--stroke); }
+.aftermath-dashboard .metric-card.tone-loss{ background:var(--card); border-color:var(--stroke); }
+.aftermath-dashboard .metric-card.tone-profit .metric-value{ color:var(--profit-dark); }
+.aftermath-dashboard .metric-card.tone-loss .metric-value{ color:var(--loss-dark); }
 
 /* ---- Trade history ---- */
 .aftermath-dashboard .history-card h2{ font-size:16px; margin-bottom:12px; }
@@ -169,6 +173,8 @@
 }
 .aftermath-dashboard .tag-buy{ background:var(--profit-tint); }
 .aftermath-dashboard .tag-sell{ background:var(--loss-tint); }
+.aftermath-dashboard .pl-up{ color:var(--profit-dark); font-weight:700; }
+.aftermath-dashboard .pl-down{ color:var(--loss-dark); font-weight:700; }
 .aftermath-dashboard .src-auto{ color:var(--ink); font-size:10.5px; opacity:.65; }
 
 .aftermath-dashboard footer{ text-align:center; margin-top:20px; color:var(--ink); font-size:11.5px; opacity:.7; }
