@@ -27,7 +27,7 @@ function smoothPath(points) {
 }
 
 export default function EquityChart({ slice }) {
-  const path = useMemo(() => {
+  const { path, areaPath } = useMemo(() => {
     const vals = slice.map((p) => p.balance);
     const min = Math.min(...vals);
     const max = Math.max(...vals);
@@ -40,12 +40,24 @@ export default function EquityChart({ slice }) {
       return [x, y];
     });
 
-    return smoothPath(pts);
+    const line = smoothPath(pts);
+    const lastX = pts[pts.length - 1] ? pts[pts.length - 1][0] : VIEW_W;
+    const firstX = pts[0] ? pts[0][0] : 0;
+    const area = `${line} L${lastX.toFixed(1)},${VIEW_H} L${firstX.toFixed(1)},${VIEW_H} Z`;
+
+    return { path: line, areaPath: area };
   }, [slice]);
 
   return (
     <div className="chart-wrap">
       <svg viewBox={`0 0 ${VIEW_W} ${VIEW_H}`} preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="equityFill" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="var(--profit)" stopOpacity="0.35" />
+            <stop offset="100%" stopColor="var(--profit)" stopOpacity="0.02" />
+          </linearGradient>
+        </defs>
+        <path d={areaPath} fill="url(#equityFill)" stroke="none" />
         <path
           d={path}
           fill="none"
