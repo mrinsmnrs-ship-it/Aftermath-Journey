@@ -43,6 +43,12 @@ export default function AftermathDashboard() {
   const winRate = periodTrades.length ? (wins.length / periodTrades.length) * 100 : 0;
   const avgWin = wins.length ? wins.reduce((s, t) => s + t.pl, 0) / wins.length : 0;
   const avgLoss = losses.length ? losses.reduce((s, t) => s + t.pl, 0) / losses.length : 0;
+  // Avg R multiple: each trade's pl is normalized by its own risk amount first (r = pl / risk),
+  // then averaged. This stays fair even when position sizing/risk varies from entry to entry,
+  // unlike a plain avgWin/avgLoss dollar ratio.
+  const avgR = periodTrades.length
+    ? periodTrades.reduce((s, t) => s + t.r, 0) / periodTrades.length
+    : 0;
 
   const maxDD = useMemo(() => {
     const vals = slice.map((p) => p.balance);
@@ -137,11 +143,11 @@ export default function AftermathDashboard() {
             <div className="metric-sub">rata-rata rugi</div>
           </div>
           <div className="card metric-card">
-            <div className="metric-label">R:R Ratio</div>
+            <div className="metric-label">R Multiple</div>
             <div className="metric-value">
-              {avgLoss !== 0 ? `1 : ${Math.abs(avgWin / avgLoss).toFixed(2)}` : '—'}
+              {periodTrades.length ? `${avgR >= 0 ? '+' : ''}${avgR.toFixed(2)}R` : '—'}
             </div>
-            <div className="metric-sub">risk : reward</div>
+            <div className="metric-sub">rata-rata per trade</div>
           </div>
           <div className="card metric-card">
             <div className="metric-label">Max Drawdown</div>
