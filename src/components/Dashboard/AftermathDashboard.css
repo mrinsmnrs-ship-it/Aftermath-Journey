@@ -204,6 +204,17 @@
 }
 .aftermath-dashboard .modal-sub{ font-size:12px; color:var(--ink); opacity:.65; margin-bottom:18px; }
 
+.aftermath-dashboard .field-row{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.aftermath-dashboard .field-row .field{ margin-bottom:14px; }
+.aftermath-dashboard .field-optional label::after{
+  content:'opsional'; margin-left:6px; font-size:9.5px; text-transform:none;
+  letter-spacing:0; font-weight:500; opacity:.55;
+}
+.aftermath-dashboard .field-section-title{
+  font-size:11px; text-transform:uppercase; letter-spacing:.06em; font-weight:700;
+  opacity:.5; margin:18px 0 10px; padding-top:12px; border-top:1px dashed var(--stroke);
+}
+.aftermath-dashboard .field-section-title:first-of-type{ margin-top:0; padding-top:0; border-top:none; }
 .aftermath-dashboard .field{ margin-bottom:14px; }
 .aftermath-dashboard .field label{
   display:block; font-size:11px; text-transform:uppercase; letter-spacing:.06em;
