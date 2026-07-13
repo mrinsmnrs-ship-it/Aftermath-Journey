@@ -144,8 +144,8 @@
 .aftermath-dashboard .metric-label{ font-size:11px; color:var(--ink); text-transform:uppercase; letter-spacing:.06em; font-weight:600; margin-bottom:8px; }
 .aftermath-dashboard .metric-value{ font-size:22px; font-weight:700; color:var(--ink); }
 .aftermath-dashboard .metric-sub{ font-size:11px; color:var(--ink); margin-top:4px; }
-.aftermath-dashboard .metric-card.tone-profit{ background:var(--profit-tint); border-color:var(--profit); }
-.aftermath-dashboard .metric-card.tone-loss{ background:var(--loss-tint); border-color:var(--loss); }
+.aftermath-dashboard .metric-card.tone-profit{ background:var(--profit-tint); border-color:var(--stroke); }
+.aftermath-dashboard .metric-card.tone-loss{ background:var(--loss-tint); border-color:var(--stroke); }
 
 /* ---- Trade history ---- */
 .aftermath-dashboard .history-card h2{ font-size:16px; margin-bottom:12px; }
