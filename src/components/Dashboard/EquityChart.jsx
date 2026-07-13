@@ -51,13 +51,7 @@ export default function EquityChart({ slice }) {
   return (
     <div className="chart-wrap">
       <svg viewBox={`0 0 ${VIEW_W} ${VIEW_H}`} preserveAspectRatio="none">
-        <defs>
-          <linearGradient id="equityFill" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="var(--profit)" stopOpacity="0.35" />
-            <stop offset="100%" stopColor="var(--profit)" stopOpacity="0.02" />
-          </linearGradient>
-        </defs>
-        <path d={areaPath} fill="url(#equityFill)" stroke="none" />
+        <path d={areaPath} fill="var(--profit-tint)" stroke="none" />
         <path
           d={path}
           fill="none"
