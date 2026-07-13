@@ -150,34 +150,34 @@ export default function AftermathDashboard() {
         </div>
 
         <div className="metrics">
-          <div className="card metric-card">
+          <div className={`card metric-card ${totalPL >= 0 ? 'tone-profit' : 'tone-loss'}`}>
             <div className="metric-label">P/L Periode Ini</div>
             <div className="metric-value">{fmtSigned(totalPL)}</div>
             <div className="metric-sub">{periodTrades.length} trade</div>
           </div>
-          <div className="card metric-card">
+          <div className={`card metric-card ${winRate >= 50 ? 'tone-profit' : 'tone-loss'}`}>
             <div className="metric-label">Win Rate</div>
             <div className="metric-value">{winRate.toFixed(0)}%</div>
             <div className="metric-sub">{wins.length}W / {losses.length}L</div>
           </div>
-          <div className="card metric-card">
+          <div className="card metric-card tone-profit">
             <div className="metric-label">Avg Win</div>
             <div className="metric-value">{fmtSigned(avgWin)}</div>
             <div className="metric-sub">rata-rata profit</div>
           </div>
-          <div className="card metric-card">
+          <div className="card metric-card tone-loss">
             <div className="metric-label">Avg Loss</div>
             <div className="metric-value">{fmtSigned(avgLoss)}</div>
             <div className="metric-sub">rata-rata rugi</div>
           </div>
-          <div className="card metric-card">
+          <div className={`card metric-card ${avgR >= 0 ? 'tone-profit' : 'tone-loss'}`}>
             <div className="metric-label">R Multiple</div>
             <div className="metric-value">
               {periodTrades.length ? `${avgR >= 0 ? '+' : ''}${avgR.toFixed(2)}R` : '—'}
             </div>
             <div className="metric-sub">rata-rata per trade</div>
           </div>
-          <div className="card metric-card">
+          <div className={`card metric-card ${maxDD === 0 ? '' : 'tone-loss'}`}>
             <div className="metric-label">Max Drawdown</div>
             <div className="metric-value">-{maxDD.toFixed(1)}%</div>
             <div className="metric-sub">titik terendah</div>
