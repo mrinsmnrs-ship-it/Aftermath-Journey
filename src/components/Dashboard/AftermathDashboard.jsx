@@ -3,6 +3,7 @@ import EquityChart from './EquityChart';
 import AccountSwitchModal from './AccountSwitchModal';
 import ConnectAccountModal from './ConnectAccountModal';
 import AddTradeModal from './AddTradeModal';
+import LoginModal from './LoginModal';
 import { generateInitialAccounts, genAccount, fmtMoney, fmtSigned } from '../../utils/mockAccountData';
 import './AftermathDashboard.css';
 
@@ -20,6 +21,7 @@ export default function AftermathDashboard() {
   const [acctModalOpen, setAcctModalOpen] = useState(false);
   const [connectModalOpen, setConnectModalOpen] = useState(false);
   const [addTradeModalOpen, setAddTradeModalOpen] = useState(false);
+  const [loginModalOpen, setLoginModalOpen] = useState(false);
 
   const currentAccount = accounts.find((a) => a.id === currentAcctId) ?? accounts[0];
 
@@ -122,6 +124,12 @@ export default function AftermathDashboard() {
               </svg>
             </button>
             <button className="btn btn-accent" onClick={() => setConnectModalOpen(true)}>+ Connect Account</button>
+            <button className="btn btn-square" type="button" onClick={() => setLoginModalOpen(true)} aria-label="Sign in">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </button>
           </div>
         </header>
 
@@ -236,6 +244,12 @@ export default function AftermathDashboard() {
         open={addTradeModalOpen}
         onClose={() => setAddTradeModalOpen(false)}
         onAddTrade={handleAddTrade}
+      />
+
+      <LoginModal
+        open={loginModalOpen}
+        onClose={() => setLoginModalOpen(false)}
+        onLogin={({ mode, email }) => console.log(`${mode} attempt:`, email)}
       />
     </div>
   );
