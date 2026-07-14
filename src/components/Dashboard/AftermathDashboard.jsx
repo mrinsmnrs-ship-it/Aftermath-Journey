@@ -8,6 +8,7 @@ import ConnectAccountModal from './ConnectAccountModal';
 import AddTradeModal from './AddTradeModal';
 import LoginModal from './LoginModal';
 import { generateInitialAccounts, genAccount, fmtMoney, fmtSigned } from '../../utils/mockAccountData';
+import { fetchLiveAccountData } from '../../utils/metaApi';
 import { loadUserData, saveUserData } from '../../utils/userData';
 import { useScrollBottomCap } from '../../utils/useScrollBottomCap';
 import './AftermathDashboard.css';
@@ -162,9 +163,30 @@ export default function AftermathDashboard() {
   const rows = periodTrades.slice(-15).reverse();
   const [historyRef, historyScrollable] = useScrollBottomCap([rows.length]);
 
-  function handleConnect({ name, type }) {
-    // NOTE: masih mock generator. Ganti bagian ini pas integrasi MetaApi asli.
+  async function handleConnect({ name, type, accountId, token }) {
     const newId = 'acc' + (accounts.length + 1) + '_' + Date.now();
+
+    if (accountId && token) {
+      // Coba connect asli ke MetaApi. Kalau gagal, lempar error supaya
+      // ConnectAccountModal bisa nampilin pesannya dan modal TETAP KEBUKA
+      // (bukan malah nutup terus generate data demo diem-diem).
+      const live = await fetchLiveAccountData(token, accountId);
+      const newAcct = {
+        id: newId,
+        name,
+        type,
+        equity: live.equity,
+        trades: live.trades,
+        isLive: true,
+        currency: live.currency,
+      };
+      setAccounts((prev) => [...prev, newAcct]);
+      setCurrentAcctId(newId);
+      setConnectModalOpen(false);
+      return;
+    }
+
+    // Fallback demo/simulasi kalau Account ID atau Token nggak diisi.
     const seed = Math.floor(Math.random() * 900) + 100;
     const startBalance = type === 'Funded' ? 100000 : 2000;
     const winBias = 0.45 + Math.random() * 0.15;
@@ -220,7 +242,7 @@ export default function AftermathDashboard() {
               <path d="M21 11.9v2a4 4 0 01-4 4H3"></path>
             </svg>
           </button>
-          <button className="btn btn-accent" onClick={() => setConnectModalOpen(true)}>+ Connect Account</button>
+          <button className="btn btn-accent" onClick={() => setConnectModalOpen(true)}>+ Tambah Akun</button>
           {user ? (
             <button className="btn btn-login" type="button" onClick={handleLogout} title="Klik untuk sign out">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
@@ -255,7 +277,7 @@ export default function AftermathDashboard() {
               <path d="M21 11.9v2a4 4 0 01-4 4H3"></path>
             </svg>
           </button>
-          <button className="btn btn-square btn-square-accent" type="button" onClick={() => setConnectModalOpen(true)} aria-label="Connect Account">
+          <button className="btn btn-square btn-square-accent" type="button" onClick={() => setConnectModalOpen(true)} aria-label="Tambah Akun">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M6.5 6.5l3 3"></path>
               <path d="M14.5 14.5l3 3"></path>
