@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { useScrollBottomCap } from '../../utils/useScrollBottomCap';
 
 export default function ConnectAccountModal({ open, onClose, onConnect }) {
   const [nickname, setNickname] = useState('');
   const [accountId, setAccountId] = useState('');
   const [token, setToken] = useState('');
   const [type, setType] = useState('Funded');
+  const [bodyRef, scrollable] = useScrollBottomCap([open]);
 
   function resetForm() {
     setNickname('');
@@ -38,7 +40,7 @@ export default function ConnectAccountModal({ open, onClose, onConnect }) {
           </div>
           <div className="modal-sub">Hubungkan akun MT4/MT5 kamu lewat MetaApi. Sekali connect, data auto-sync.</div>
         </div>
-        <div className="modal-body">
+        <div className={`modal-body${scrollable ? ' has-scroll-cap' : ''}`} ref={bodyRef}>
 
         <form onSubmit={handleSubmit}>
           <div className="field">
@@ -91,6 +93,7 @@ export default function ConnectAccountModal({ open, onClose, onConnect }) {
         </form>
 
         <div className="security-note">🔒 Token disimpan terenkripsi di server. Kamu bisa putuskan koneksi kapan saja.</div>
+        {scrollable && <div className="scroll-cap" aria-hidden="true" />}
         </div>
       </div>
     </div>
