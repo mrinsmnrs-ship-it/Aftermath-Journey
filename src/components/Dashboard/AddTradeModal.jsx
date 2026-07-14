@@ -123,11 +123,13 @@ export default function AddTradeModal({ open, onClose, onAddTrade }) {
     >
       <div className="modal-card">
         <div className="modal-head">
-          <h2>Input Trade Manual</h2>
-          <button className="btn modal-close" onClick={handleClose} aria-label="Tutup">✕</button>
+          <div className="modal-head-top">
+            <h2>Input Trade Manual</h2>
+            <button className="btn modal-close" onClick={handleClose} aria-label="Tutup">✕</button>
+          </div>
+          <div className="modal-sub">Catat trade yang belum ke-sync otomatis dari broker.</div>
         </div>
         <div className="modal-body">
-        <div className="modal-sub">Catat trade yang belum ke-sync otomatis dari broker.</div>
 
         <form onSubmit={handleSubmit}>
           <div className="field">
