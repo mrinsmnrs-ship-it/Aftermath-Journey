@@ -1,18 +1,25 @@
 import { useState } from 'react';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../firebase';
+import { translateAuthError } from '../../utils/authErrors';
 import { useScrollBottomCap } from '../../utils/useScrollBottomCap';
 import { useBodyScrollLock } from '../../utils/useBodyScrollLock';
 
-export default function LoginModal({ open, onClose, onLogin }) {
+export default function LoginModal({ open, onClose }) {
   const [mode, setMode] = useState('signin'); // 'signin' | 'signup'
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [bodyRef] = useScrollBottomCap([open, mode]);
+  const [error, setError] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [bodyRef] = useScrollBottomCap([open, mode, error]);
   useBodyScrollLock(open);
 
   function resetForm() {
     setEmail('');
     setPassword('');
     setMode('signin');
+    setError('');
+    setSubmitting(false);
   }
 
   function handleClose() {
@@ -20,11 +27,29 @@ export default function LoginModal({ open, onClose, onLogin }) {
     onClose();
   }
 
-  function handleSubmit(e) {
+  function switchMode(next) {
+    setMode(next);
+    setError('');
+  }
+
+  async function handleSubmit(e) {
     e.preventDefault();
-    onLogin?.({ mode, email, password });
-    resetForm();
-    onClose();
+    setError('');
+    setSubmitting(true);
+    try {
+      if (mode === 'signin') {
+        await signInWithEmailAndPassword(auth, email, password);
+      } else {
+        await createUserWithEmailAndPassword(auth, email, password);
+      }
+      // Sukses: onAuthStateChanged di dashboard bakal otomatis kedeteksi
+      // dan langsung nge-load/nyimpen data trading khusus akun ini.
+      resetForm();
+      onClose();
+    } catch (err) {
+      setSubmitting(false);
+      setError(translateAuthError(err));
+    }
   }
 
   return (
@@ -55,6 +80,7 @@ export default function LoginModal({ open, onClose, onLogin }) {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="nama@email.com"
+                autoComplete="email"
                 required
               />
             </div>
@@ -66,20 +92,30 @@ export default function LoginModal({ open, onClose, onLogin }) {
                 id="loginPassword"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                autoComplete={mode === 'signin' ? 'current-password' : 'new-password'}
+                minLength={6}
                 required
               />
             </div>
 
-            <button type="submit" className="btn btn-accent submit-btn">
-              {mode === 'signin' ? 'Sign In' : 'Create Account'}
+            {error && (
+              <div className="field-hint" style={{ color: 'var(--loss)', opacity: 1, marginBottom: '10px' }}>
+                {error}
+              </div>
+            )}
+
+            <button type="submit" className="btn btn-accent submit-btn" disabled={submitting}>
+              {submitting
+                ? 'Memproses...'
+                : mode === 'signin' ? 'Sign In' : 'Create Account'}
             </button>
           </form>
 
           <div className="login-switch">
             {mode === 'signin' ? (
-              <>Belum punya akun? <button type="button" onClick={() => setMode('signup')}>Sign up</button></>
+              <>Belum punya akun? <button type="button" onClick={() => switchMode('signup')}>Sign up</button></>
             ) : (
-              <>Sudah punya akun? <button type="button" onClick={() => setMode('signin')}>Sign in</button></>
+              <>Sudah punya akun? <button type="button" onClick={() => switchMode('signin')}>Sign in</button></>
             )}
           </div>
         </div>
