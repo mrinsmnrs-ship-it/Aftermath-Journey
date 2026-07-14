@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { useScrollBottomCap } from '../../utils/useScrollBottomCap';
+import { useBodyScrollLock } from '../../utils/useBodyScrollLock';
 
 export default function ConnectAccountModal({ open, onClose, onConnect }) {
   const [nickname, setNickname] = useState('');
   const [accountId, setAccountId] = useState('');
   const [token, setToken] = useState('');
   const [type, setType] = useState('Funded');
-  const [bodyRef] = useScrollBottomCap([open]);
+  useBodyScrollLock(open);
 
   function resetForm() {
     setNickname('');
@@ -40,7 +40,7 @@ export default function ConnectAccountModal({ open, onClose, onConnect }) {
           </div>
           <div className="modal-sub">Hubungkan akun MT4/MT5 kamu lewat MetaApi. Sekali connect, data auto-sync.</div>
         </div>
-        <div className="modal-body" ref={bodyRef}>
+        <div className="modal-body modal-body-static">
 
         <form onSubmit={handleSubmit}>
           <div className="field">
@@ -92,9 +92,14 @@ export default function ConnectAccountModal({ open, onClose, onConnect }) {
           <button type="submit" className="btn btn-accent submit-btn">Connect & Sync</button>
         </form>
 
-        <div className="security-note">🔒 Token disimpan terenkripsi di server. Kamu bisa putuskan koneksi kapan saja.</div>
+        <div className="security-note">
+          <svg className="security-note-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <rect x="5" y="11" width="14" height="10" rx="2"></rect>
+            <path d="M8 11V7a4 4 0 018 0v4"></path>
+          </svg>
+          <span>Token disimpan terenkripsi di server. Kamu bisa putuskan koneksi kapan saja.</span>
         </div>
-        <div className="modal-bottom-space" aria-hidden="true" />
+        </div>
       </div>
     </div>
   );
