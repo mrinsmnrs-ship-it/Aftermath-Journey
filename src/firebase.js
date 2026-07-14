@@ -21,12 +21,12 @@ import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
 // (lihat file firestore.rules di root project ini, dan panduan setup-nya).
 // ============================================================================
 const firebaseConfig = {
-  apiKey: 'AIzaSyDF55RP1abY-rPiGSftb7g84NF_iqM6dEU',
-  authDomain: 'apocalypse-archives.firebaseapp.com',
-  projectId: 'apocalypse-archives',
-  storageBucket: 'apocalypse-archives.firebasestorage.app',
-  messagingSenderId: '532879929499',
-  appId: '1:532879929499:web:6b898bb917662ed102563e',
+  apiKey: 'AIzaSyB_tE8QghpeCuXhT9O7d2Mo3F2PVWoJxCI',
+  authDomain: 'aftermath-1a35f.firebaseapp.com',
+  projectId: 'aftermath-1a35f',
+  storageBucket: 'aftermath-1a35f.firebasestorage.app',
+  messagingSenderId: '181373920804',
+  appId: '1:181373920804:web:04b30550fa9f33ea5d9ab1',
 };
 
 const app = initializeApp(firebaseConfig);
