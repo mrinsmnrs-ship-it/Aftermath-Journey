@@ -1,298 +1,358 @@
-import { useState } from 'react';
-import { useScrollBottomCap } from '../../utils/useScrollBottomCap';
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-// Format Date -> value siap pakai buat <input type="datetime-local">, presisi ke menit.
-function nowLocal() {
-  const d = new Date();
-  d.setSeconds(0, 0);
-  const pad = (n) => String(n).padStart(2, '0');
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+.aftermath-dashboard {
+  --ink:#111111;
+  --paper:#F5F6F1;
+  --card:#FFFFFF;
+  --profit:#17A672;
+  --profit-tint:#DFF5EC;
+  --profit-dark:#0D7A54;
+  --loss:#E8483D;
+  --loss-tint:#FCE4E2;
+  --loss-dark:#B33327;
+  --accent:#FFD23F;
+  --login-blue:#3D6EF0;
+  --muted:#767672;
+  --line-soft:#E4E4DE;
+  --border-w:1.5px;
+  --radius:16px;
+  --stroke:#111111;
+  --shadow:4px 4px 0 var(--stroke);
+  --shadow-sm:3px 3px 0 var(--stroke);
+
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Inter', sans-serif;
+  padding:20px;
+  min-height:100vh;
+  transition:background-color .2s ease, color .2s ease;
 }
 
-const initialState = {
-  openTime: nowLocal(),
-  closeTime: nowLocal(),
-  pair: '',
-  dir: 'BUY',
-  size: '',
-  entryPrice: '',
-  exitPrice: '',
-  sl: '',
-  tp: '',
-  plGross: '',
-  commission: '',
-  swap: '',
-};
+.aftermath-dashboard *{box-sizing:border-box; margin:0; padding:0; font-family:inherit;}
+.aftermath-dashboard .card,
+.aftermath-dashboard .btn,
+.aftermath-dashboard .acct-switch-btn,
+.aftermath-dashboard .period-toggle{ transition:background-color .2s ease, border-color .2s ease, color .2s ease; }
 
-export default function AddTradeModal({ open, onClose, onAddTrade }) {
-  const [form, setForm] = useState(initialState);
-  const [error, setError] = useState('');
-  const [bodyRef, scrollable] = useScrollBottomCap([open, error]);
+.aftermath-dashboard .wrap{max-width:920px; margin:0 auto;}
 
-  function set(field) {
-    return (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
-  }
+/* ---- Header ---- */
+.aftermath-dashboard header{
+  display:flex; align-items:center; justify-content:space-between;
+  flex-wrap:wrap; gap:14px;
+  margin-bottom:22px;
+}
+.aftermath-dashboard .brand{ display:flex; align-items:center; gap:10px; }
+.aftermath-dashboard .brand .mark{
+  width:34px; height:34px; background:var(--ink); border-radius:8px;
+  display:flex; align-items:center; justify-content:center;
+  color:var(--paper); font-weight:700; font-size:16px;
+  transform:rotate(-4deg);
+}
+.aftermath-dashboard .brand h1{ font-size:22px; letter-spacing:-0.02em; }
+.aftermath-dashboard .header-actions{display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+.aftermath-dashboard .header-actions-mobile{ display:none; }
 
-  function resetForm() {
-    setForm(initialState);
-    setError('');
-  }
+.aftermath-dashboard .acct-switch-btn{
+  display:inline-flex; align-items:center; gap:9px;
+  font-size:13px; font-weight:700;
+  background:var(--card); border:var(--border-w) solid var(--stroke); border-radius:10px;
+  padding:9px 14px;
+  box-shadow:var(--shadow-sm);
+  cursor:pointer; outline:none; color:var(--ink);
+  transition:transform .1s ease, box-shadow .1s ease;
+}
+.aftermath-dashboard .acct-switch-btn:hover{ transform:translate(-2px,-2px); box-shadow:5px 5px 0 var(--stroke); }
+.aftermath-dashboard .acct-switch-btn:active{ transform:translate(3px,3px); box-shadow:0 0 0 var(--stroke); }
+.aftermath-dashboard .acct-switch-btn svg{ width:15px; height:15px; flex-shrink:0; }
 
-  function handleClose() {
-    resetForm();
-    onClose();
-  }
+.aftermath-dashboard .btn{
+  font-weight:700; font-size:13px;
+  border:var(--border-w) solid var(--stroke); border-radius:10px;
+  padding:9px 16px; cursor:pointer; background:var(--card); color:var(--ink);
+  box-shadow:var(--shadow-sm);
+  transition:transform .1s ease, box-shadow .1s ease;
+}
+.aftermath-dashboard .btn:hover{ transform:translate(-2px,-2px); box-shadow:5px 5px 0 var(--stroke); }
+.aftermath-dashboard .btn:active{ transform:translate(3px,3px); box-shadow:0 0 0 var(--stroke); }
+.aftermath-dashboard .btn-accent{ background:var(--accent); color:#111111; }
 
-  function handleSubmit(e) {
-    e.preventDefault();
+.aftermath-dashboard .btn-square{
+  display:inline-flex; align-items:center; justify-content:center;
+  width:38px; height:38px; padding:0; flex-shrink:0;
+}
+.aftermath-dashboard .btn-square svg{ width:18px; height:18px; }
+.aftermath-dashboard .btn-square-blue{ background:var(--login-blue); color:#FFFFFF; }
+.aftermath-dashboard .btn-square-accent{ background:var(--accent); color:#111111; }
 
-    const entryNum = parseFloat(form.entryPrice);
-    const exitNum = parseFloat(form.exitPrice);
-    const plGrossNum = parseFloat(form.plGross);
-    const sizeTrim = form.size.trim();
+/* ---- Account switch popup ---- */
+.aftermath-dashboard .acct-list{ display:flex; flex-direction:column; gap:9px; margin-top:4px; }
+.aftermath-dashboard .acct-item{
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+  text-align:left; width:100%;
+  font-size:13.5px; font-weight:600; color:var(--ink);
+  background:var(--card); border:var(--border-w) solid var(--stroke); border-radius:12px;
+  padding:13px 14px; cursor:pointer;
+  box-shadow:var(--shadow-sm);
+  transition:transform .1s ease, box-shadow .1s ease, background-color .12s ease;
+}
+.aftermath-dashboard .acct-item:hover{ transform:translate(-2px,-2px); box-shadow:5px 5px 0 var(--stroke); }
+.aftermath-dashboard .acct-item:active{ transform:translate(3px,3px); box-shadow:0 0 0 var(--stroke); }
+.aftermath-dashboard .acct-item.active{ background:var(--ink); color:var(--paper); }
+.aftermath-dashboard .acct-item .acct-item-meta{ display:flex; flex-direction:column; gap:3px; }
+.aftermath-dashboard .acct-item .acct-item-type{
+  font-size:10px; text-transform:uppercase; letter-spacing:.06em; font-weight:700; color:inherit;
+}
+.aftermath-dashboard .acct-item .acct-item-check{ width:16px; height:16px; flex-shrink:0; opacity:0; }
+.aftermath-dashboard .acct-item.active .acct-item-check{ opacity:1; }
 
-    if (!form.pair.trim() || !sizeTrim) {
-      setError('Pair dan Size wajib diisi.');
-      return;
-    }
-    if (!form.openTime || !form.closeTime) {
-      setError('Waktu buka dan tutup wajib diisi.');
-      return;
-    }
-    if (form.closeTime < form.openTime) {
-      setError('Waktu tutup nggak boleh sebelum waktu buka.');
-      return;
-    }
-    if (Number.isNaN(entryNum) || Number.isNaN(exitNum)) {
-      setError('Entry Price dan Exit Price wajib diisi dengan angka.');
-      return;
-    }
-    if (Number.isNaN(plGrossNum)) {
-      setError('P/L Kotor wajib diisi dengan angka (isi negatif kalau loss).');
-      return;
-    }
+/* ---- Card base ---- */
+.aftermath-dashboard .card{
+  background:var(--card);
+  border:var(--border-w) solid var(--stroke);
+  border-radius:var(--radius);
+  padding:20px;
+  position:relative;
+  overflow:hidden;
+}
 
-    // SL opsional: kalau diisi & valid, R multiple ke-hitung dari jarak entry-SL,
-    // dibandingkan sama jarak entry-exit ke arah yang sama (jadi netral dari lot size).
-    const slNum = parseFloat(form.sl);
-    const hasSl = !Number.isNaN(slNum) && slNum !== entryNum;
-    let r = 0;
-    if (hasSl) {
-      const riskDist = Math.abs(entryNum - slNum);
-      const profitDist = form.dir === 'BUY' ? exitNum - entryNum : entryNum - exitNum;
-      r = riskDist > 0 ? +(profitDist / riskDist).toFixed(2) : 0;
-    }
+/* ---- Equity Hero ---- */
+.aftermath-dashboard .equity-card{ margin-bottom:18px; }
+.aftermath-dashboard .equity-top{
+  display:flex; justify-content:space-between; align-items:flex-start;
+  flex-wrap:wrap; gap:14px; margin-bottom:6px;
+}
+.aftermath-dashboard .equity-label{ font-size:12px; color:var(--ink); text-transform:uppercase; letter-spacing:.08em; font-weight:600; }
+.aftermath-dashboard .equity-value{ font-size:34px; font-weight:700; line-height:1.1; margin-top:4px;}
+.aftermath-dashboard .delta-pill{
+  display:inline-flex; align-items:center; gap:5px;
+  font-weight:700; font-size:13px;
+  padding:5px 10px; border-radius:20px; border:var(--border-w) solid var(--stroke);
+  margin-top:8px;
+}
+.aftermath-dashboard .delta-up{ background:var(--profit-tint); color:var(--profit-dark); }
+.aftermath-dashboard .delta-down{ background:var(--loss-tint); color:var(--loss-dark); }
 
-    // TP opsional, cuma buat catatan — nggak masuk hitungan apa pun.
-    const tpNum = parseFloat(form.tp);
-    const hasTp = !Number.isNaN(tpNum);
+.aftermath-dashboard .period-toggle{ display:flex; gap:8px; height:fit-content; }
+.aftermath-dashboard .period-toggle button{
+  font-size:12px; font-weight:700;
+  border:var(--border-w) solid var(--stroke); border-radius:10px;
+  background:var(--card); color:var(--ink); padding:8px 12px; cursor:pointer;
+  box-shadow:var(--shadow-sm);
+  transition:transform .1s ease, box-shadow .1s ease, background-color .12s ease;
+}
+.aftermath-dashboard .period-toggle button:hover:not(.active){ transform:translate(-2px,-2px); box-shadow:5px 5px 0 var(--stroke); }
+.aftermath-dashboard .period-toggle button:active{ transform:translate(3px,3px); box-shadow:0 0 0 var(--stroke); }
+.aftermath-dashboard .period-toggle button.active{ background:var(--ink); color:var(--paper); }
 
-    const commissionNum = parseFloat(form.commission);
-    const swapNum = parseFloat(form.swap);
-    const commission = Number.isNaN(commissionNum) ? 0 : commissionNum;
-    const swap = Number.isNaN(swapNum) ? 0 : swapNum;
-    const plNet = +(plGrossNum + commission + swap).toFixed(2);
+.aftermath-dashboard .chart-wrap{ margin:14px -20px 0 -20px; }
+.aftermath-dashboard .chart-wrap svg{ width:100%; height:170px; display:block; }
 
-    onAddTrade({
-      // 'date' tetap disediakan (diambil dari closeTime) biar kompatibel sama
-      // fitur yang udah ada: filter periode, kurva equity, dan tabel riwayat.
-      date: form.closeTime.slice(0, 10),
-      openTime: form.openTime,
-      closeTime: form.closeTime,
-      pair: form.pair.trim().toUpperCase() || '—',
-      dir: form.dir,
-      size: sizeTrim || '0.00',
-      entryPrice: entryNum,
-      exitPrice: exitNum,
-      sl: hasSl ? slNum : null,
-      tp: hasTp ? tpNum : null,
-      plGross: +plGrossNum.toFixed(2),
-      commission: +commission.toFixed(2),
-      swap: +swap.toFixed(2),
-      // 'pl' = net P/L (kotor + komisi + swap). Ini yang dipakai buat kurva equity,
-      // total P/L, win rate, dst — karena itu yang beneran ngaruh ke saldo akun.
-      pl: plNet,
-      r,
-      src: 'manual',
-    });
-    resetForm();
-  }
+/* ---- Symbol performance ---- */
+.aftermath-dashboard .symbol-card{ margin-bottom:18px; }
+.aftermath-dashboard .symbol-card h2{ font-size:16px; margin-bottom:14px; }
+.aftermath-dashboard .symbol-empty{ font-size:12.5px; color:var(--ink); opacity:.7; padding:6px 0; }
+.aftermath-dashboard .symbol-list{ display:flex; flex-direction:column; gap:14px; }
+.aftermath-dashboard .symbol-row-top{
+  display:flex; align-items:center; justify-content:space-between;
+  font-size:13px; margin-bottom:6px;
+}
+.aftermath-dashboard .symbol-name{ font-weight:700; letter-spacing:.02em; }
+.aftermath-dashboard .symbol-bar-track{
+  width:100%; height:12px; background:var(--paper);
+  border:var(--border-w) solid var(--stroke); border-radius:6px; overflow:hidden;
+}
+.aftermath-dashboard .symbol-bar{ height:100%; min-width:2px; }
+.aftermath-dashboard .symbol-bar-up{ background:var(--profit); }
+.aftermath-dashboard .symbol-bar-down{ background:var(--loss); }
+.aftermath-dashboard .symbol-row-sub{ font-size:10.5px; color:var(--ink); opacity:.65; margin-top:4px; }
 
-  return (
-    <div
-      className={`modal-overlay ${open ? 'open' : ''}`}
-      onClick={(e) => { if (e.target === e.currentTarget) handleClose(); }}
-    >
-      <div className="modal-card">
-        <div className="modal-head">
-          <div className="modal-head-top">
-            <h2>Input Trade Manual</h2>
-            <button className="btn modal-close" onClick={handleClose} aria-label="Tutup">✕</button>
-          </div>
-          <div className="modal-sub">Catat trade yang belum ke-sync otomatis dari broker.</div>
-        </div>
-        <div className={`modal-body${scrollable ? ' has-scroll-cap' : ''}`} ref={bodyRef}>
+/* ---- Metrics grid ---- */
+.aftermath-dashboard .metrics{
+  display:grid; grid-template-columns:repeat(3, 1fr); gap:14px; margin-bottom:18px;
+}
+.aftermath-dashboard .metric-card{ padding:16px; }
+.aftermath-dashboard .metric-label{ font-size:11px; color:var(--ink); text-transform:uppercase; letter-spacing:.06em; font-weight:600; margin-bottom:8px; }
+.aftermath-dashboard .metric-value{ font-size:22px; font-weight:700; color:var(--ink); }
+.aftermath-dashboard .metric-sub{ font-size:11px; color:var(--ink); margin-top:4px; }
+.aftermath-dashboard .metric-card.tone-profit{ background:var(--card); border-color:var(--stroke); }
+.aftermath-dashboard .metric-card.tone-loss{ background:var(--card); border-color:var(--stroke); }
+.aftermath-dashboard .metric-card.tone-profit .metric-value{ color:var(--profit-dark); }
+.aftermath-dashboard .metric-card.tone-loss .metric-value{ color:var(--loss-dark); }
 
-        <form onSubmit={handleSubmit}>
-          <div className="field">
-            <label htmlFor="tPair">Pair</label>
-            <input
-              type="text"
-              id="tPair"
-              value={form.pair}
-              onChange={set('pair')}
-              required
-            />
-          </div>
+/* ---- Trade history ---- */
+.aftermath-dashboard .history-card h2{ font-size:16px; margin-bottom:12px; }
+/* Tinggi header (32px) & tiap baris (35px) dikunci pakai line-height fixed,
+   biar max-height di bawah ini selalu presisi motong tepat di garis antar baris. */
+.aftermath-dashboard .table-wrap{
+  position:relative;
+  margin:0 -20px; max-height:312px; overflow-y:auto;
+  scrollbar-width:thin; scrollbar-color: var(--stroke) transparent;
+}
+.aftermath-dashboard .table-wrap::-webkit-scrollbar{ width:8px; }
+.aftermath-dashboard .table-wrap::-webkit-scrollbar-track{ background:transparent; }
+.aftermath-dashboard .table-wrap::-webkit-scrollbar-thumb{
+  background:var(--stroke); border-radius:999px; border:2px solid var(--card); background-clip:padding-box;
+}
+/* Garis tipis di bawah area scroll, biar keliatan ada batas pas discroll — simpel,
+   cuma garis (sama gayanya kayak border-bottom di modal-head), bukan blok warna.
+   Pakai position:sticky (sama kayak thead di atas) biar diem di tempat pas discroll.
+   Cuma dirender kalau kontennya emang overflow (lihat useScrollBottomCap). */
+.aftermath-dashboard .scroll-cap{
+  position:sticky; bottom:0; z-index:2;
+  display:block; width:100%; height:0;
+  border-top:var(--border-w) solid var(--stroke);
+  pointer-events:none;
+}
+.aftermath-dashboard table{ width:100%; border-collapse:collapse; font-size:12.5px; }
+.aftermath-dashboard thead tr{ background:var(--ink); }
+.aftermath-dashboard thead th{
+  position:sticky; top:0; z-index:1; height:32px; box-sizing:border-box;
+  text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:.05em;
+  color:var(--paper); font-weight:700; padding:9px 10px; line-height:14px; background:var(--ink);
+}
+.aftermath-dashboard thead th:first-child{ padding-left:30px; }
+.aftermath-dashboard thead th:last-child{ padding-right:30px; }
+.aftermath-dashboard tbody td{
+  height:35px; box-sizing:border-box;
+  padding:9px 8px; line-height:16px; border-bottom:1px solid var(--line-soft); color:var(--ink);
+}
+.aftermath-dashboard tbody td:first-child{ padding-left:30px; }
+.aftermath-dashboard tbody td:last-child{ padding-right:30px; }
+.aftermath-dashboard tbody tr:last-child td{ border-bottom:none; }
+.aftermath-dashboard .tag{
+  display:inline-block; font-size:10px; font-weight:700; padding:2px 7px; border-radius:6px;
+  border:1px solid var(--stroke); color:var(--ink);
+}
+.aftermath-dashboard .tag-buy{ background:var(--profit-tint); }
+.aftermath-dashboard .tag-sell{ background:var(--loss-tint); }
+.aftermath-dashboard .pl-up{ color:var(--profit-dark); font-weight:700; }
+.aftermath-dashboard .pl-down{ color:var(--loss-dark); font-weight:700; }
 
-          <div className="field">
-            <label>Arah</label>
-            <div className="type-toggle">
-              <button type="button" className={form.dir === 'BUY' ? 'active' : ''} onClick={() => setForm((f) => ({ ...f, dir: 'BUY' }))}>
-                Buy
-              </button>
-              <button type="button" className={form.dir === 'SELL' ? 'active' : ''} onClick={() => setForm((f) => ({ ...f, dir: 'SELL' }))}>
-                Sell
-              </button>
-            </div>
-          </div>
+.aftermath-dashboard footer{ text-align:center; margin-top:20px; color:var(--ink); font-size:11.5px; opacity:.7; }
 
-          <div className="field">
-            <label htmlFor="tSize">Size (lot)</label>
-            <input
-              type="number"
-              step="0.01"
-              id="tSize"
-              value={form.size}
-              onChange={set('size')}
-              required
-            />
-          </div>
+@media (max-width:640px){
+  .aftermath-dashboard{ padding:14px; }
+  .aftermath-dashboard header{ margin-bottom:16px; gap:10px; }
+  .aftermath-dashboard .brand .mark{ width:28px; height:28px; font-size:13px; border-radius:7px; }
+  .aftermath-dashboard .brand h1{ font-size:17px; }
+  .aftermath-dashboard .header-actions-desktop{ display:none; }
+  .aftermath-dashboard .header-actions-mobile{ display:flex; gap:8px; }
+  .aftermath-dashboard .btn-square{ width:34px; height:34px; }
+  .aftermath-dashboard .btn-square svg{ width:16px; height:16px; }
+  .aftermath-dashboard .metrics{ grid-template-columns:repeat(2, 1fr); }
+  .aftermath-dashboard .equity-value{ font-size:26px; }
+  .aftermath-dashboard table{ font-size:11px; }
+  .aftermath-dashboard thead th:nth-child(4), .aftermath-dashboard tbody td:nth-child(4){ display:none; }
+}
 
-          <div className="field-section-title">Waktu</div>
-          <div className="field">
-            <label htmlFor="tOpen">Waktu Buka</label>
-            <input
-              type="datetime-local"
-              id="tOpen"
-              value={form.openTime}
-              onChange={set('openTime')}
-              required
-            />
-          </div>
-          <div className="field">
-            <label htmlFor="tClose">Waktu Tutup</label>
-            <input
-              type="datetime-local"
-              id="tClose"
-              value={form.closeTime}
-              onChange={set('closeTime')}
-              required
-            />
-          </div>
+/* ---- Modals ---- */
+.aftermath-dashboard .modal-overlay{
+  position:fixed; inset:0; background:rgba(17,17,17,0.55);
+  display:none; align-items:flex-end; justify-content:center; z-index:50;
+  padding:0;
+}
+.aftermath-dashboard .modal-overlay.open{ display:flex; }
+.aftermath-dashboard .modal-card{
+  background:var(--card); border:var(--border-w) solid var(--stroke);
+  border-radius:20px 20px 0 0; padding:0; width:100%; max-width:480px;
+  max-height:88vh; position:relative; overflow:hidden;
+  display:flex; flex-direction:column;
+  transform:translateZ(0);
+  -webkit-transform:translateZ(0);
+  isolation:isolate;
+}
+@media (min-width:640px){
+  .aftermath-dashboard .modal-overlay{ align-items:center; }
+  .aftermath-dashboard .modal-card{ border-radius:var(--radius); }
+}
+.aftermath-dashboard .modal-overlay.modal-center{ align-items:center; padding:20px; }
+.aftermath-dashboard .modal-overlay.modal-center .modal-card{ border-radius:var(--radius); max-width:400px; }
 
-          <div className="field-section-title">Harga</div>
-          <div className="field-row">
-            <div className="field">
-              <label htmlFor="tEntry">Entry Price</label>
-              <input
-                type="number"
-                step="any"
-                id="tEntry"
-                value={form.entryPrice}
-                onChange={set('entryPrice')}
-                required
-              />
-            </div>
-            <div className="field">
-              <label htmlFor="tExit">Exit Price</label>
-              <input
-                type="number"
-                step="any"
-                id="tExit"
-                value={form.exitPrice}
-                onChange={set('exitPrice')}
-                required
-              />
-            </div>
-          </div>
-          <div className="field-row">
-            <div className="field field-optional">
-              <label htmlFor="tSl">Stop Loss</label>
-              <input
-                type="number"
-                step="any"
-                id="tSl"
-                value={form.sl}
-                onChange={set('sl')}
-              />
-            </div>
-            <div className="field field-optional">
-              <label htmlFor="tTp">Take Profit</label>
-              <input
-                type="number"
-                step="any"
-                id="tTp"
-                value={form.tp}
-                onChange={set('tp')}
-              />
-            </div>
-          </div>
-          <div className="field-hint" style={{ marginTop: '-6px', marginBottom: '14px' }}>
-            Isi Stop Loss buat auto-hitung R Multiple dari jarak entry-SL. Take Profit cuma catatan, nggak dipakai hitungan.
-          </div>
+/* Header tetap nempel di atas, nggak ikut ke-scroll bareng isi form. */
+.aftermath-dashboard .modal-head{
+  flex-shrink:0; padding:22px 22px 16px;
+  background:var(--card); position:relative; z-index:1;
+  border-bottom:var(--border-w) solid var(--stroke);
+}
+.aftermath-dashboard .modal-head-top{
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  margin-bottom:10px;
+}
+.aftermath-dashboard .modal-head h2{ font-size:18px; }
+.aftermath-dashboard .modal-close{
+  width:32px; height:32px; padding:0; border-radius:50%;
+  display:flex; align-items:center; justify-content:center; font-size:16px; line-height:1;
+}
 
-          <div className="field-section-title">P/L</div>
-          <div className="field">
-            <label htmlFor="tPlGross">P/L Kotor ($)</label>
-            <input
-              type="number"
-              step="0.01"
-              id="tPlGross"
-              value={form.plGross}
-              onChange={set('plGross')}
-              required
-            />
-            <div className="field-hint">Hasil aktual dari broker. Isi negatif untuk loss, cth. -30.</div>
-          </div>
-          <div className="field-row">
-            <div className="field field-optional">
-              <label htmlFor="tCommission">Komisi ($)</label>
-              <input
-                type="number"
-                step="0.01"
-                id="tCommission"
-                value={form.commission}
-                onChange={set('commission')}
-              />
-            </div>
-            <div className="field field-optional">
-              <label htmlFor="tSwap">Swap ($)</label>
-              <input
-                type="number"
-                step="0.01"
-                id="tSwap"
-                value={form.swap}
-                onChange={set('swap')}
-              />
-            </div>
-          </div>
-          <div className="field-hint" style={{ marginTop: '-6px', marginBottom: '14px' }}>
-            Komisi biasanya negatif, Swap bisa plus atau minus. Keduanya ngurangin/nambahin P/L bersih.
-          </div>
+/* Area yang scroll: dikasih padding sendiri + scrollbar custom biar sudut modal tetap rounded. */
+.aftermath-dashboard .modal-body{
+  position:relative;
+  flex:1 1 auto; min-height:0; overflow-y:auto; overflow-x:hidden;
+  padding:18px 22px 22px;
+  scrollbar-width:thin; scrollbar-color: var(--stroke) transparent;
+}
+.aftermath-dashboard .modal-body::-webkit-scrollbar{ width:8px; }
+.aftermath-dashboard .modal-body::-webkit-scrollbar-track{ background:transparent; }
+.aftermath-dashboard .modal-body::-webkit-scrollbar-thumb{
+  background:var(--stroke); border-radius:999px; border:2px solid var(--card); background-clip:padding-box;
+}
+.aftermath-dashboard .modal-body::-webkit-scrollbar-button{
+  display:none; width:0; height:0;
+}
+.aftermath-dashboard .modal-sub{ font-size:12px; color:var(--ink); margin-bottom:0; }
 
-          {error && (
-            <div className="field-hint" style={{ color: 'var(--loss)', opacity: 1, marginBottom: '10px' }}>
-              {error}
-            </div>
-          )}
+/* Buffer tetap di luar area scroll, sama konsepnya kayak padding-bottom di .card
+   buat .table-wrap: bukan bagian dari konten yang discroll, jadi selalu ada jarak
+   antara batas scroll dan sudut lengkung modal-card, nggak peduli posisi scroll. */
+.aftermath-dashboard .modal-bottom-space{ flex-shrink:0; height:20px; }
 
-          <button type="submit" className="btn btn-accent submit-btn">Simpan Trade</button>
-        </form>
-        {scrollable && <div className="scroll-cap" aria-hidden="true" />}
-        </div>
-        <div className="modal-bottom-space" aria-hidden="true" />
-      </div>
-    </div>
-  );
+.aftermath-dashboard .field-row{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.aftermath-dashboard .field-row .field{ margin-bottom:14px; }
+.aftermath-dashboard .field-optional label::after{
+  content:'opsional'; margin-left:6px; font-size:9.5px; text-transform:none;
+  letter-spacing:0; font-weight:500; color:var(--ink);
+}
+.aftermath-dashboard .field-section-title{
+  font-size:11px; text-transform:uppercase; letter-spacing:.06em; font-weight:700;
+  color:var(--ink); margin:18px 0 10px; padding-top:12px; border-top:1px dashed var(--stroke);
+}
+.aftermath-dashboard .field-section-title:first-of-type{ margin-top:0; padding-top:0; border-top:none; }
+.aftermath-dashboard .field{ margin-bottom:14px; }
+.aftermath-dashboard .field label{
+  display:block; font-size:11px; text-transform:uppercase; letter-spacing:.06em;
+  font-weight:600; margin-bottom:6px;
+}
+.aftermath-dashboard .field input{
+  width:100%; font-size:13.5px;
+  border:var(--border-w) solid var(--stroke); border-radius:10px; padding:11px 12px;
+  background:var(--card); color:var(--ink); outline:none;
+}
+.aftermath-dashboard .field input::placeholder{ color:var(--muted); }
+.aftermath-dashboard .field input:focus{ border-color:var(--stroke); }
+.aftermath-dashboard .field-hint{ font-size:10.5px; color:var(--ink); margin-top:5px; }
+
+.aftermath-dashboard .type-toggle{ display:flex; gap:8px; }
+.aftermath-dashboard .type-toggle button{
+  flex:1; font-weight:700; font-size:13px;
+  border:var(--border-w) solid var(--stroke); border-radius:10px; background:var(--card); color:var(--ink);
+  padding:10px; cursor:pointer; box-shadow:var(--shadow-sm);
+  transition:transform .1s ease, box-shadow .1s ease, background-color .12s ease;
+}
+.aftermath-dashboard .type-toggle button:hover:not(.active){ transform:translate(-2px,-2px); box-shadow:5px 5px 0 var(--stroke); }
+.aftermath-dashboard .type-toggle button:active{ transform:translate(3px,3px); box-shadow:0 0 0 var(--stroke); }
+.aftermath-dashboard .type-toggle button.active{ background:var(--ink); color:var(--paper); }
+
+.aftermath-dashboard .submit-btn{ width:100%; padding:13px; font-size:14px; margin-top:6px; text-align:center; }
+.aftermath-dashboard .security-note{
+  display:flex; gap:8px; align-items:flex-start; margin-top:16px; padding:11px 12px;
+  border:1px solid var(--line-soft); border-radius:10px; font-size:11px; color:var(--ink); line-height:1.5;
+}
+
+.aftermath-dashboard .login-switch{
+  text-align:center; margin-top:16px; font-size:12px; color:var(--muted);
+}
+.aftermath-dashboard .login-switch button{
+  background:none; border:none; padding:0; margin-left:4px; cursor:pointer;
+  font-size:12px; font-weight:700; color:var(--login-blue); text-decoration:underline;
 }
