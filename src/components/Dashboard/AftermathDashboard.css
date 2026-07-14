@@ -238,57 +238,40 @@
 
 /* ---- Trade history ---- */
 .aftermath-dashboard .history-card h2{ font-size:16px; margin-bottom:12px; }
-/* Struktur ini sengaja disamain sama modal (modal-head / modal-body / modal-bottom-space):
-   header row dan garis bawah adalah elemen flex NYATA di luar area scroll (bukan position:sticky),
-   jadi keduanya 100% diem walau discroll kenceng/fling — nggak ada elemen yang ikut-ikutan gerak. */
-.aftermath-dashboard .history-frame{
-  display:flex; flex-direction:column;
-  margin:0 -20px;
-}
-.aftermath-dashboard .history-row{
-  display:grid;
-  grid-template-columns:1.3fr 1fr 0.9fr 0.7fr 1fr;
-  align-items:stretch;
-}
-.aftermath-dashboard .history-row-head{
-  flex-shrink:0; height:32px; box-sizing:border-box;
-  background:var(--ink);
-}
-.aftermath-dashboard .history-row-head span{
-  display:flex; align-items:center;
-  font-size:10.5px; text-transform:uppercase; letter-spacing:.05em;
-  color:var(--paper); font-weight:700; padding:9px 10px; box-sizing:border-box;
-}
-.aftermath-dashboard .history-row-head span:first-child{ padding-left:30px; }
-.aftermath-dashboard .history-row-head span:last-child{ padding-right:30px; }
-
-/* Ini satu-satunya bagian yang discroll — tinggi dikunci ke 8 baris (35px) biar
-   total tinggi card konsisten kayak sebelumnya (32px header + 280px isi = 312px). */
-.aftermath-dashboard .history-scroll{
-  max-height:280px; overflow-y:auto;
+/* .history-frame cuma pembungkus flex-column: table-wrap (scroll) + history-bottom-cap
+   (elemen fixed NYATA di luar scroll, bukan sticky) — sama konsepnya kayak modal-bottom-space,
+   jadi garis bawah 100% diem walau discroll kenceng. Header tetap sticky di dalam table-wrap
+   seperti semula karena itu cara paling stabil buat ngejaga lebar kolom tetap presisi. */
+.aftermath-dashboard .history-frame{ display:flex; flex-direction:column; margin:0 -20px; }
+.aftermath-dashboard .table-wrap{
+  position:relative;
+  max-height:312px; overflow-y:auto;
   scrollbar-width:thin; scrollbar-color: var(--stroke) transparent;
 }
-.aftermath-dashboard .history-scroll::-webkit-scrollbar{ width:8px; }
-.aftermath-dashboard .history-scroll::-webkit-scrollbar-track{ background:transparent; }
-.aftermath-dashboard .history-scroll::-webkit-scrollbar-thumb{
+.aftermath-dashboard .table-wrap::-webkit-scrollbar{ width:8px; }
+.aftermath-dashboard .table-wrap::-webkit-scrollbar-track{ background:transparent; }
+.aftermath-dashboard .table-wrap::-webkit-scrollbar-thumb{
   background:var(--stroke); border-radius:999px; border:2px solid var(--card); background-clip:padding-box;
 }
-.aftermath-dashboard .history-scroll .history-row{
+.aftermath-dashboard table{ width:100%; border-collapse:collapse; font-size:12.5px; }
+.aftermath-dashboard thead tr{ background:var(--ink); }
+.aftermath-dashboard thead th{
+  position:sticky; top:0; z-index:1; height:32px; box-sizing:border-box;
+  text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:.05em;
+  color:var(--paper); font-weight:700; padding:9px 10px; line-height:14px; background:var(--ink);
+  will-change:transform;
+}
+.aftermath-dashboard thead th:first-child{ padding-left:30px; }
+.aftermath-dashboard thead th:last-child{ padding-right:30px; }
+.aftermath-dashboard tbody td{
   height:35px; box-sizing:border-box;
-  border-bottom:1px solid var(--line-soft);
+  padding:9px 8px; line-height:16px; border-bottom:1px solid var(--line-soft); color:var(--ink);
 }
-.aftermath-dashboard .history-scroll .history-row:last-child{ border-bottom:none; }
-.aftermath-dashboard .history-scroll .history-row span{
-  display:flex; align-items:center;
-  font-size:12.5px; padding:9px 8px; box-sizing:border-box; color:var(--ink);
-}
-.aftermath-dashboard .history-scroll .history-row span:first-child{ padding-left:30px; }
-.aftermath-dashboard .history-scroll .history-row span:last-child{ padding-right:30px; }
-.aftermath-dashboard .history-empty{
-  color:var(--ink); text-align:center; padding:20px; font-size:12.5px;
-}
+.aftermath-dashboard tbody td:first-child{ padding-left:30px; }
+.aftermath-dashboard tbody td:last-child{ padding-right:30px; }
+.aftermath-dashboard tbody tr:last-child td{ border-bottom:none; }
 
-/* Garis tipis di bawah area scroll — elemen flex nyata (flex-shrink:0), BUKAN sticky,
+/* Garis bawah: elemen flex-shrink:0 NYATA di luar .table-wrap (bukan sticky/di dalam scroll),
    jadi nggak pernah ikut gerak walau discroll sekencang apa pun.
    Cuma dirender kalau kontennya emang overflow (lihat useScrollBottomCap). */
 .aftermath-dashboard .history-bottom-cap{
@@ -317,8 +300,8 @@
   .aftermath-dashboard .btn-square svg{ width:16px; height:16px; }
   .aftermath-dashboard .metrics{ grid-template-columns:repeat(2, 1fr); }
   .aftermath-dashboard .equity-value{ font-size:26px; }
-  .aftermath-dashboard .history-row{ font-size:11px; grid-template-columns:1.4fr 1fr 1fr 1fr; }
-  .aftermath-dashboard .history-col-size{ display:none; }
+  .aftermath-dashboard table{ font-size:11px; }
+  .aftermath-dashboard thead th:nth-child(4), .aftermath-dashboard tbody td:nth-child(4){ display:none; }
 }
 
 /* ---- Modals ---- */
