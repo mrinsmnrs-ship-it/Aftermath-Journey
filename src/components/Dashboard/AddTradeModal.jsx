@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useScrollBottomCap } from '../../utils/useScrollBottomCap';
 
 // Format Date -> value siap pakai buat <input type="datetime-local">, presisi ke menit.
 function nowLocal() {
@@ -26,6 +27,7 @@ const initialState = {
 export default function AddTradeModal({ open, onClose, onAddTrade }) {
   const [form, setForm] = useState(initialState);
   const [error, setError] = useState('');
+  const [bodyRef, scrollable] = useScrollBottomCap([open, error]);
 
   function set(field) {
     return (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
@@ -129,7 +131,7 @@ export default function AddTradeModal({ open, onClose, onAddTrade }) {
           </div>
           <div className="modal-sub">Catat trade yang belum ke-sync otomatis dari broker.</div>
         </div>
-        <div className="modal-body">
+        <div className={`modal-body${scrollable ? ' has-scroll-cap' : ''}`} ref={bodyRef}>
 
         <form onSubmit={handleSubmit}>
           <div className="field">
@@ -287,6 +289,7 @@ export default function AddTradeModal({ open, onClose, onAddTrade }) {
 
           <button type="submit" className="btn btn-accent submit-btn">Simpan Trade</button>
         </form>
+        {scrollable && <div className="scroll-cap" aria-hidden="true" />}
         </div>
       </div>
     </div>
