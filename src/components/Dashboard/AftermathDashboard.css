@@ -148,6 +148,25 @@
 .aftermath-dashboard .chart-wrap{ margin:14px -20px 0 -20px; }
 .aftermath-dashboard .chart-wrap svg{ width:100%; height:170px; display:block; }
 
+/* ---- Symbol performance ---- */
+.aftermath-dashboard .symbol-card{ margin-bottom:18px; }
+.aftermath-dashboard .symbol-card h2{ font-size:16px; margin-bottom:14px; }
+.aftermath-dashboard .symbol-empty{ font-size:12.5px; color:var(--ink); opacity:.7; padding:6px 0; }
+.aftermath-dashboard .symbol-list{ display:flex; flex-direction:column; gap:14px; }
+.aftermath-dashboard .symbol-row-top{
+  display:flex; align-items:center; justify-content:space-between;
+  font-size:13px; margin-bottom:6px;
+}
+.aftermath-dashboard .symbol-name{ font-weight:700; letter-spacing:.02em; }
+.aftermath-dashboard .symbol-bar-track{
+  width:100%; height:12px; background:var(--paper);
+  border:var(--border-w) solid var(--stroke); border-radius:6px; overflow:hidden;
+}
+.aftermath-dashboard .symbol-bar{ height:100%; min-width:2px; }
+.aftermath-dashboard .symbol-bar-up{ background:var(--profit); }
+.aftermath-dashboard .symbol-bar-down{ background:var(--loss); }
+.aftermath-dashboard .symbol-row-sub{ font-size:10.5px; color:var(--ink); opacity:.65; margin-top:4px; }
+
 /* ---- Metrics grid ---- */
 .aftermath-dashboard .metrics{
   display:grid; grid-template-columns:repeat(3, 1fr); gap:14px; margin-bottom:18px;
@@ -163,8 +182,10 @@
 
 /* ---- Trade history ---- */
 .aftermath-dashboard .history-card h2{ font-size:16px; margin-bottom:12px; }
+/* Tinggi header (32px) & tiap baris (35px) dikunci pakai line-height fixed,
+   biar max-height di bawah ini selalu presisi motong tepat di garis antar baris. */
 .aftermath-dashboard .table-wrap{
-  margin:0 -20px; max-height:420px; overflow-y:auto;
+  margin:0 -20px; max-height:312px; overflow-y:auto;
   scrollbar-width:thin; scrollbar-color: var(--stroke) transparent;
 }
 .aftermath-dashboard .table-wrap::-webkit-scrollbar{ width:8px; }
@@ -175,14 +196,16 @@
 .aftermath-dashboard table{ width:100%; border-collapse:collapse; font-size:12.5px; }
 .aftermath-dashboard thead tr{ background:var(--ink); }
 .aftermath-dashboard thead th{
-  position:sticky; top:0; z-index:1;
+  position:sticky; top:0; z-index:1; height:32px; box-sizing:border-box;
   text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:.05em;
-  color:var(--paper); font-weight:700; padding:9px 10px; background:var(--ink);
+  color:var(--paper); font-weight:700; padding:9px 10px; line-height:14px; background:var(--ink);
 }
 .aftermath-dashboard thead th:first-child{ padding-left:30px; }
 .aftermath-dashboard thead th:last-child{ padding-right:30px; }
-.aftermath-dashboard tbody tr:first-child td{ padding-top:14px; }
-.aftermath-dashboard tbody td{ padding:9px 8px; border-bottom:1px solid var(--line-soft); color:var(--ink); }
+.aftermath-dashboard tbody td{
+  height:35px; box-sizing:border-box;
+  padding:9px 8px; line-height:16px; border-bottom:1px solid var(--line-soft); color:var(--ink);
+}
 .aftermath-dashboard tbody td:first-child{ padding-left:30px; }
 .aftermath-dashboard tbody td:last-child{ padding-right:30px; }
 .aftermath-dashboard tbody tr:last-child td{ border-bottom:none; }
