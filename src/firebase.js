@@ -20,12 +20,12 @@ import { getFirestore } from 'firebase/firestore';
 // (lihat file firestore.rules di root project ini, dan panduan setup-nya).
 // ============================================================================
 const firebaseConfig = {
-  apiKey: 'GANTI_DENGAN_API_KEY_KAMU',
-  authDomain: 'GANTI_DENGAN_PROJECT_ID.firebaseapp.com',
-  projectId: 'GANTI_DENGAN_PROJECT_ID',
-  storageBucket: 'GANTI_DENGAN_PROJECT_ID.appspot.com',
-  messagingSenderId: 'GANTI_DENGAN_SENDER_ID',
-  appId: 'GANTI_DENGAN_APP_ID',
+  apiKey: 'AIzaSyDF55RP1abY-rPiGSftb7g84NF_iqM6dEU',
+  authDomain: 'apocalypse-archives.firebaseapp.com',
+  projectId: 'apocalypse-archives',
+  storageBucket: 'apocalypse-archives.firebasestorage.app',
+  messagingSenderId: '532879929499',
+  appId: '1:532879929499:web:6b898bb917662ed102563e',
 };
 
 const app = initializeApp(firebaseConfig);
