@@ -65,6 +65,21 @@ export default function AftermathDashboard() {
     return dd;
   }, [slice]);
 
+  // Rekap P/L per simbol buat lihat pair mana yang paling profitable di periode ini.
+  const symbolPerf = useMemo(() => {
+    const map = {};
+    periodTrades.forEach((t) => {
+      if (!map[t.pair]) map[t.pair] = { pair: t.pair, pl: 0, trades: 0 };
+      map[t.pair].pl += t.pl;
+      map[t.pair].trades += 1;
+    });
+    const list = Object.values(map);
+    const maxAbs = Math.max(1, ...list.map((s) => Math.abs(s.pl)));
+    return list
+      .map((s) => ({ ...s, pct: Math.max(4, (Math.abs(s.pl) / maxAbs) * 100) }))
+      .sort((a, b) => b.pl - a.pl);
+  }, [periodTrades]);
+
   const rows = periodTrades.slice(-15).reverse();
 
   function handleConnect({ name, type }) {
@@ -187,6 +202,31 @@ export default function AftermathDashboard() {
             </div>
           </div>
           <EquityChart slice={slice} />
+        </div>
+
+        <div className="card symbol-card">
+          <h2>Performa per Symbol</h2>
+          {symbolPerf.length === 0 ? (
+            <div className="symbol-empty">Belum ada trade di periode ini.</div>
+          ) : (
+            <div className="symbol-list">
+              {symbolPerf.map((s) => (
+                <div key={s.pair}>
+                  <div className="symbol-row-top">
+                    <span className="symbol-name">{s.pair}</span>
+                    <span className={s.pl >= 0 ? 'pl-up' : 'pl-down'}>{fmtSigned(s.pl)}</span>
+                  </div>
+                  <div className="symbol-bar-track">
+                    <div
+                      className={`symbol-bar ${s.pl >= 0 ? 'symbol-bar-up' : 'symbol-bar-down'}`}
+                      style={{ width: `${s.pct}%` }}
+                    />
+                  </div>
+                  <div className="symbol-row-sub">{s.trades} trade</div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="metrics">
