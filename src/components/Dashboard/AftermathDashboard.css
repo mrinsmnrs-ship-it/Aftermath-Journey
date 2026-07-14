@@ -358,6 +358,9 @@
 .aftermath-dashboard .modal-body::-webkit-scrollbar-button{
   display:none; width:0; height:0;
 }
+/* Dipakai di Connect Account: bikin isi modal statis (nggak bisa discroll sama sekali),
+   sama kayak modal Login & Switch Akun yang emang nggak butuh scroll. */
+.aftermath-dashboard .modal-body-static{ overflow-y:visible; }
 .aftermath-dashboard .modal-sub{ font-size:12px; color:var(--ink); margin-bottom:0; }
 
 /* Buffer tetap di luar area scroll, sama konsepnya kayak padding-bottom di .card
@@ -406,8 +409,11 @@
 
 .aftermath-dashboard .submit-btn{ width:100%; padding:13px; font-size:14px; margin-top:6px; text-align:center; }
 .aftermath-dashboard .security-note{
-  display:flex; gap:8px; align-items:flex-start; margin-top:16px; padding:11px 12px;
-  border:1px solid var(--line-soft); border-radius:10px; font-size:11px; color:var(--ink); line-height:1.5;
+  display:flex; gap:8px; align-items:flex-start; margin-top:16px; padding:11px 12px 0;
+  font-size:11px; color:var(--ink); line-height:1.5;
+}
+.aftermath-dashboard .security-note-icon{
+  flex-shrink:0; width:15px; height:15px; margin-top:1px; color:var(--ink);
 }
 
 .aftermath-dashboard .login-switch{
