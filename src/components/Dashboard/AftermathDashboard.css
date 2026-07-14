@@ -165,15 +165,22 @@
   font-size:13px; margin-bottom:6px;
 }
 .aftermath-dashboard .symbol-name{ font-weight:700; letter-spacing:.02em; }
+/* Track & bar ditumpuk presisi di titik yang sama pakai CSS grid (bukan bar
+   yang lebih kecil di dalam track). Karena ukurannya sama persis, border
+   hitam keduanya pas nutupin satu sama lain — jadi satu garis, gak ketumpuk
+   nempel sebelahan kayak sebelumnya. */
 .aftermath-dashboard .symbol-bar-track{
-  width:100%; height:12px; background:var(--paper);
-  border:var(--border-w) solid var(--stroke); border-radius:6px; overflow:visible;
+  display:grid; grid-template-columns:1fr;
+  width:100%; height:12px; border-radius:6px;
 }
-/* Bar isinya dikasih border-radius + border hitam sendiri (bukan cuma ngandelin
-   overflow:hidden dari track), jadi ujung kanan/kirinya tetap rounded dan ada
-   outline hitam walaupun lebarnya nggak sampai 100% dari track. */
+.aftermath-dashboard .symbol-bar-track::before{
+  content:''; grid-area:1/1;
+  border:var(--border-w) solid var(--stroke); border-radius:6px;
+  background:var(--paper); box-sizing:border-box;
+}
 .aftermath-dashboard .symbol-bar{
-  height:100%; min-width:10px;
+  grid-area:1/1; justify-self:start; align-self:stretch;
+  min-width:10px;
   border-radius:6px; border:var(--border-w) solid var(--stroke);
   box-sizing:border-box;
 }
