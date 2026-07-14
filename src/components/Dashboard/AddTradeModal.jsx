@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useScrollBottomCap } from '../../utils/useScrollBottomCap';
+import { useBodyScrollLock } from '../../utils/useBodyScrollLock';
 
 // Format Date -> value siap pakai buat <input type="datetime-local">, presisi ke menit.
 function nowLocal() {
@@ -28,6 +29,7 @@ export default function AddTradeModal({ open, onClose, onAddTrade }) {
   const [form, setForm] = useState(initialState);
   const [error, setError] = useState('');
   const [bodyRef] = useScrollBottomCap([open, error]);
+  useBodyScrollLock(open);
 
   function set(field) {
     return (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
