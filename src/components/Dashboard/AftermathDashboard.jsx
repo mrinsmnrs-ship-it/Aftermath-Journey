@@ -1,10 +1,14 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { signOut } from 'firebase/auth';
+import { auth } from '../../firebase';
+import { useAuth } from '../../hooks/useAuth';
 import EquityChart from './EquityChart';
 import AccountSwitchModal from './AccountSwitchModal';
 import ConnectAccountModal from './ConnectAccountModal';
 import AddTradeModal from './AddTradeModal';
 import LoginModal from './LoginModal';
 import { generateInitialAccounts, genAccount, fmtMoney, fmtSigned } from '../../utils/mockAccountData';
+import { loadUserData, saveUserData } from '../../utils/userData';
 import { useScrollBottomCap } from '../../utils/useScrollBottomCap';
 import './AftermathDashboard.css';
 
@@ -16,6 +20,7 @@ const PERIODS = [
 ];
 
 export default function AftermathDashboard() {
+  const { user, loading: authLoading } = useAuth();
   const [accounts, setAccounts] = useState(() => generateInitialAccounts());
   const [currentAcctId, setCurrentAcctId] = useState(accounts[0].id);
   const [currentPeriod, setCurrentPeriod] = useState(30);
@@ -23,6 +28,79 @@ export default function AftermathDashboard() {
   const [connectModalOpen, setConnectModalOpen] = useState(false);
   const [addTradeModalOpen, setAddTradeModalOpen] = useState(false);
   const [loginModalOpen, setLoginModalOpen] = useState(false);
+
+  // dataReady dipakai buat nahan auto-save di bawah biar nggak nulis balik data yang
+  // baru aja selesai di-load (baik pas ganti akun login maupun pas awal buka halaman).
+  const [dataReady, setDataReady] = useState(false);
+  const [syncError, setSyncError] = useState('');
+  const skipNextSave = useRef(false);
+
+  // Tiap kali status login berubah (login/logout/ganti akun): load data akun trading
+  // milik user itu dari Firestore, atau siapin data starter kalau ini user baru,
+  // atau balik ke mode "tamu" (data demo lokal, nggak nyambung ke server) kalau logout.
+  useEffect(() => {
+    if (authLoading) return; // masih ngecek sesi login tersimpan, jangan ngapa-ngapain dulu
+    let cancelled = false;
+
+    async function syncOnAuthChange() {
+      setDataReady(false);
+      setSyncError('');
+
+      if (!user) {
+        skipNextSave.current = true;
+        const demo = generateInitialAccounts();
+        if (cancelled) return;
+        setAccounts(demo);
+        setCurrentAcctId(demo[0].id);
+        setDataReady(true);
+        return;
+      }
+
+      try {
+        const saved = await loadUserData(user.uid);
+        if (cancelled) return;
+
+        if (saved && saved.accounts?.length) {
+          skipNextSave.current = true;
+          setAccounts(saved.accounts);
+          setCurrentAcctId(saved.currentAcctId ?? saved.accounts[0].id);
+        } else {
+          // User baru pertama kali login: kasih data demo sebagai starter buat dieksplor,
+          // langsung disimpan sebagai data awal akun ini di Firestore.
+          const demo = generateInitialAccounts();
+          skipNextSave.current = true;
+          setAccounts(demo);
+          setCurrentAcctId(demo[0].id);
+          await saveUserData(user.uid, { accounts: demo, currentAcctId: demo[0].id });
+        }
+        setDataReady(true);
+      } catch (err) {
+        if (cancelled) return;
+        console.error(err);
+        setSyncError('Gagal memuat data dari server. Cek koneksi internet.');
+        setDataReady(true);
+      }
+    }
+
+    syncOnAuthChange();
+    return () => { cancelled = true; };
+  }, [user, authLoading]);
+
+  // Auto-save ke Firestore tiap kali data akun berubah (nambah trade, connect akun baru,
+  // ganti akun aktif) — cuma kalau user login & bukan hasil proses "load" barusan.
+  useEffect(() => {
+    if (!dataReady || !user) return;
+    if (skipNextSave.current) { skipNextSave.current = false; return; }
+    saveUserData(user.uid, { accounts, currentAcctId }).catch((err) => {
+      console.error(err);
+      setSyncError('Gagal menyimpan perubahan ke server.');
+    });
+  }, [accounts, currentAcctId, user, dataReady]);
+
+  function handleLogout() {
+    signOut(auth);
+    setAcctModalOpen(false);
+  }
 
   const currentAccount = accounts.find((a) => a.id === currentAcctId) ?? accounts[0];
 
@@ -143,13 +221,23 @@ export default function AftermathDashboard() {
             </svg>
           </button>
           <button className="btn btn-accent" onClick={() => setConnectModalOpen(true)}>+ Connect Account</button>
-          <button className="btn btn-login" type="button" onClick={() => setLoginModalOpen(true)}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
-            <span>Login</span>
-          </button>
+          {user ? (
+            <button className="btn btn-login" type="button" onClick={handleLogout} title="Klik untuk sign out">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="7" r="4"></circle>
+                <path d="M4 21a8 8 0 0116 0"></path>
+              </svg>
+              <span className="btn-login-email">{user.email}</span>
+            </button>
+          ) : (
+            <button className="btn btn-login" type="button" onClick={() => setLoginModalOpen(true)}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              <span>Login</span>
+            </button>
+          )}
         </div>
 
         <div className="header-actions header-actions-mobile">
@@ -176,11 +264,24 @@ export default function AftermathDashboard() {
               <path d="M8.5 9.5l6 6"></path>
             </svg>
           </button>
-          <button className="btn btn-square btn-square-blue" type="button" onClick={() => setLoginModalOpen(true)} aria-label="Sign in">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
+          <button
+            className={`btn btn-square ${user ? 'btn-square-green' : 'btn-square-blue'}`}
+            type="button"
+            onClick={user ? handleLogout : () => setLoginModalOpen(true)}
+            aria-label={user ? 'Sign out' : 'Sign in'}
+            title={user ? user.email : 'Sign in'}
+          >
+            {user ? (
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="7" r="4"></circle>
+                <path d="M4 21a8 8 0 0116 0"></path>
+              </svg>
+            ) : (
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            )}
           </button>
         </div>
         </header>
@@ -194,6 +295,7 @@ export default function AftermathDashboard() {
       </div>
 
       <div className="wrap">
+        {syncError && <div className="sync-error-banner">{syncError}</div>}
         <div className="card equity-card">
           <div className="equity-top">
             <div>
@@ -340,7 +442,6 @@ export default function AftermathDashboard() {
       <LoginModal
         open={loginModalOpen}
         onClose={() => setLoginModalOpen(false)}
-        onLogin={({ mode, email }) => console.log(`${mode} attempt:`, email)}
       />
     </div>
   );
