@@ -95,6 +95,7 @@ export default function ConnectAccountModal({ open, onClose, onConnect }) {
         <div className="security-note">🔒 Token disimpan terenkripsi di server. Kamu bisa putuskan koneksi kapan saja.</div>
         {scrollable && <div className="scroll-cap" aria-hidden="true" />}
         </div>
+        <div className="modal-bottom-space" aria-hidden="true" />
       </div>
     </div>
   );
