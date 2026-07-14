@@ -32,11 +32,13 @@ export default function ConnectAccountModal({ open, onClose, onConnect }) {
     >
       <div className="modal-card">
         <div className="modal-head">
-          <h2>Connect Account</h2>
-          <button className="btn modal-close" onClick={handleClose} aria-label="Tutup">✕</button>
+          <div className="modal-head-top">
+            <h2>Connect Account</h2>
+            <button className="btn modal-close" onClick={handleClose} aria-label="Tutup">✕</button>
+          </div>
+          <div className="modal-sub">Hubungkan akun MT4/MT5 kamu lewat MetaApi. Sekali connect, data auto-sync.</div>
         </div>
         <div className="modal-body">
-        <div className="modal-sub">Hubungkan akun MT4/MT5 kamu lewat MetaApi. Sekali connect, data auto-sync.</div>
 
         <form onSubmit={handleSubmit}>
           <div className="field">
