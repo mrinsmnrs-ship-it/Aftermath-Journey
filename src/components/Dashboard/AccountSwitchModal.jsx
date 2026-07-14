@@ -1,4 +1,7 @@
+import { useScrollBottomCap } from '../../utils/useScrollBottomCap';
+
 export default function AccountSwitchModal({ open, accounts, currentAcctId, onSelect, onClose }) {
+  const [bodyRef, scrollable] = useScrollBottomCap([accounts.length, open]);
   return (
     <div
       className={`modal-overlay modal-center ${open ? 'open' : ''}`}
@@ -12,7 +15,7 @@ export default function AccountSwitchModal({ open, accounts, currentAcctId, onSe
           </div>
           <div className="modal-sub">Ganti akun trading yang sedang ditampilkan.</div>
         </div>
-        <div className="modal-body">
+        <div className={`modal-body${scrollable ? ' has-scroll-cap' : ''}`} ref={bodyRef}>
           <div className="acct-list">
             {accounts.map((a) => (
               <button
@@ -31,6 +34,7 @@ export default function AccountSwitchModal({ open, accounts, currentAcctId, onSe
               </button>
             ))}
           </div>
+          {scrollable && <div className="scroll-cap" aria-hidden="true" />}
         </div>
       </div>
     </div>
