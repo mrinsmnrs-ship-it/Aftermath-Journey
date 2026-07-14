@@ -27,7 +27,7 @@ const initialState = {
 export default function AddTradeModal({ open, onClose, onAddTrade }) {
   const [form, setForm] = useState(initialState);
   const [error, setError] = useState('');
-  const [bodyRef, scrollable] = useScrollBottomCap([open, error]);
+  const [bodyRef] = useScrollBottomCap([open, error]);
 
   function set(field) {
     return (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
@@ -131,7 +131,7 @@ export default function AddTradeModal({ open, onClose, onAddTrade }) {
           </div>
           <div className="modal-sub">Catat trade yang belum ke-sync otomatis dari broker.</div>
         </div>
-        <div className={`modal-body${scrollable ? ' has-scroll-cap' : ''}`} ref={bodyRef}>
+        <div className="modal-body" ref={bodyRef}>
 
         <form onSubmit={handleSubmit}>
           <div className="field">
@@ -289,7 +289,6 @@ export default function AddTradeModal({ open, onClose, onAddTrade }) {
 
           <button type="submit" className="btn btn-accent submit-btn">Simpan Trade</button>
         </form>
-        {scrollable && <div className="scroll-cap" aria-hidden="true" />}
         </div>
         <div className="modal-bottom-space" aria-hidden="true" />
       </div>
