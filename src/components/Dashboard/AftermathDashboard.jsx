@@ -121,67 +121,77 @@ export default function AftermathDashboard() {
     setAddTradeModalOpen(false);
   }
 
+  const tickerText = 'Data disinkronkan otomatis dari MetaApi \u00b7 Terakhir sync 2 menit lalu \u00b7 Pantau equity real-time \u00b7 Kelola banyak akun trading dalam satu dashboard';
+
   return (
     <div className="aftermath-dashboard">
+      <header>
+        <div className="brand">
+          <div className="mark">A.</div>
+          <h1>AFTERMATH</h1>
+        </div>
+        <div className="header-actions header-actions-desktop">
+          <button className="btn" type="button" onClick={() => setAddTradeModalOpen(true)}>+ Input Trade</button>
+          <button className="acct-switch-btn" type="button" onClick={() => setAcctModalOpen(true)}>
+            <span>{currentAccount.name}</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M17 2.1l4 4-4 4"></path>
+              <path d="M3 12.1v-2a4 4 0 014-4h14"></path>
+              <path d="M7 21.9l-4-4 4-4"></path>
+              <path d="M21 11.9v2a4 4 0 01-4 4H3"></path>
+            </svg>
+          </button>
+          <button className="btn btn-accent" onClick={() => setConnectModalOpen(true)}>+ Connect Account</button>
+          <button className="btn btn-login" type="button" onClick={() => setLoginModalOpen(true)}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span>Login</span>
+          </button>
+        </div>
+
+        <div className="header-actions header-actions-mobile">
+          <button className="btn btn-square" type="button" onClick={() => setAddTradeModalOpen(true)} aria-label="Input Trade">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 5v14"></path>
+              <path d="M5 12h14"></path>
+            </svg>
+          </button>
+          <button className="btn btn-square" type="button" onClick={() => setAcctModalOpen(true)} aria-label="Ganti Akun">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M17 2.1l4 4-4 4"></path>
+              <path d="M3 12.1v-2a4 4 0 014-4h14"></path>
+              <path d="M7 21.9l-4-4 4-4"></path>
+              <path d="M21 11.9v2a4 4 0 01-4 4H3"></path>
+            </svg>
+          </button>
+          <button className="btn btn-square btn-square-accent" type="button" onClick={() => setConnectModalOpen(true)} aria-label="Connect Account">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M6.5 6.5l3 3"></path>
+              <path d="M14.5 14.5l3 3"></path>
+              <path d="M9 15l-3.5 3.5a2.5 2.5 0 01-3.5-3.5L5.5 11.5"></path>
+              <path d="M15 9l3.5-3.5a2.5 2.5 0 013.5 3.5L18.5 12.5"></path>
+              <path d="M8.5 9.5l6 6"></path>
+            </svg>
+          </button>
+          <button className="btn btn-square btn-square-blue" type="button" onClick={() => setLoginModalOpen(true)} aria-label="Sign in">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <div className="ticker" aria-hidden="true">
+        <div className="ticker-track">
+          <span>{tickerText}</span>
+          <span>{tickerText}</span>
+        </div>
+      </div>
+
       <div className="wrap">
-        <header>
-          <div className="brand">
-            <div className="mark">A.</div>
-            <h1>AFTERMATH</h1>
-          </div>
-          <div className="header-actions header-actions-desktop">
-            <button className="btn" type="button" onClick={() => setAddTradeModalOpen(true)}>+ Input Trade</button>
-            <button className="acct-switch-btn" type="button" onClick={() => setAcctModalOpen(true)}>
-              <span>{currentAccount.name}</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M17 2.1l4 4-4 4"></path>
-                <path d="M3 12.1v-2a4 4 0 014-4h14"></path>
-                <path d="M7 21.9l-4-4 4-4"></path>
-                <path d="M21 11.9v2a4 4 0 01-4 4H3"></path>
-              </svg>
-            </button>
-            <button className="btn btn-accent" onClick={() => setConnectModalOpen(true)}>+ Connect Account</button>
-            <button className="btn btn-square btn-square-blue" type="button" onClick={() => setLoginModalOpen(true)} aria-label="Sign in">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path>
-                <circle cx="12" cy="7" r="4"></circle>
-              </svg>
-            </button>
-          </div>
-
-          <div className="header-actions header-actions-mobile">
-            <button className="btn btn-square" type="button" onClick={() => setAddTradeModalOpen(true)} aria-label="Input Trade">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 5v14"></path>
-                <path d="M5 12h14"></path>
-              </svg>
-            </button>
-            <button className="btn btn-square" type="button" onClick={() => setAcctModalOpen(true)} aria-label="Ganti Akun">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M17 2.1l4 4-4 4"></path>
-                <path d="M3 12.1v-2a4 4 0 014-4h14"></path>
-                <path d="M7 21.9l-4-4 4-4"></path>
-                <path d="M21 11.9v2a4 4 0 01-4 4H3"></path>
-              </svg>
-            </button>
-            <button className="btn btn-square btn-square-accent" type="button" onClick={() => setConnectModalOpen(true)} aria-label="Connect Account">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M6.5 6.5l3 3"></path>
-                <path d="M14.5 14.5l3 3"></path>
-                <path d="M9 15l-3.5 3.5a2.5 2.5 0 01-3.5-3.5L5.5 11.5"></path>
-                <path d="M15 9l3.5-3.5a2.5 2.5 0 013.5 3.5L18.5 12.5"></path>
-                <path d="M8.5 9.5l6 6"></path>
-              </svg>
-            </button>
-            <button className="btn btn-square btn-square-blue" type="button" onClick={() => setLoginModalOpen(true)} aria-label="Sign in">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path>
-                <circle cx="12" cy="7" r="4"></circle>
-              </svg>
-            </button>
-          </div>
-        </header>
-
         <div className="card equity-card">
           <div className="equity-top">
             <div>
