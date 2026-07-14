@@ -37,10 +37,17 @@
 .aftermath-dashboard .wrap{max-width:920px; margin:0 auto;}
 
 /* ---- Header ---- */
+/* Sticky di atas + garis pemisah biar keliatan batas dari konten yang discroll.
+   background diset sama kayak warna halaman (--paper) biar konten di belakangnya
+   ketutup rapi pas header nempel di atas. */
 .aftermath-dashboard header{
   display:flex; align-items:center; justify-content:space-between;
   flex-wrap:wrap; gap:14px;
-  margin-bottom:22px;
+  position:sticky; top:0; z-index:20;
+  background:var(--paper);
+  padding:16px 0 14px;
+  margin:-16px 0 22px;
+  border-bottom:var(--border-w) solid var(--stroke);
 }
 .aftermath-dashboard .brand{ display:flex; align-items:center; gap:10px; }
 .aftermath-dashboard .brand .mark{
@@ -160,9 +167,16 @@
 .aftermath-dashboard .symbol-name{ font-weight:700; letter-spacing:.02em; }
 .aftermath-dashboard .symbol-bar-track{
   width:100%; height:12px; background:var(--paper);
-  border:var(--border-w) solid var(--stroke); border-radius:6px; overflow:hidden;
+  border:var(--border-w) solid var(--stroke); border-radius:6px; overflow:visible;
 }
-.aftermath-dashboard .symbol-bar{ height:100%; min-width:2px; }
+/* Bar isinya dikasih border-radius + border hitam sendiri (bukan cuma ngandelin
+   overflow:hidden dari track), jadi ujung kanan/kirinya tetap rounded dan ada
+   outline hitam walaupun lebarnya nggak sampai 100% dari track. */
+.aftermath-dashboard .symbol-bar{
+  height:100%; min-width:10px;
+  border-radius:6px; border:var(--border-w) solid var(--stroke);
+  box-sizing:border-box;
+}
 .aftermath-dashboard .symbol-bar-up{ background:var(--profit); }
 .aftermath-dashboard .symbol-bar-down{ background:var(--loss); }
 .aftermath-dashboard .symbol-row-sub{ font-size:10.5px; color:var(--ink); opacity:.65; margin-top:4px; }
