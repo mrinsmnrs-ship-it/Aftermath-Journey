@@ -1,6 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
+import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
 
 // ============================================================================
 // GANTI ISI OBJECT DI BAWAH INI dengan config dari project Firebase kamu sendiri.
@@ -29,6 +30,44 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+
+// ============================================================================
+// APP CHECK (anti-bot / anti-spam) — pakai reCAPTCHA v3, invisible ke user.
+//
+// Cara aktifin:
+// 1. Buka Firebase Console -> project kamu -> menu "App Check" (di sidebar,
+//    biasanya di bawah "Build" atau lewat pencarian).
+// 2. Pilih app web kamu -> "Register" -> pilih provider "reCAPTCHA v3".
+// 3. Firebase bakal generate site key otomatis -> copy site key itu, paste
+//    ganti string 'GANTI_DENGAN_RECAPTCHA_V3_SITE_KEY' di bawah ini.
+// 4. Balik ke halaman App Check -> tab "APIs" -> untuk "Authentication" dan
+//    "Cloud Firestore", klik "Enforce". (Sebelum di-enforce, App Check cuma
+//    memonitor, belum benar-benar nge-block trafik tanpa token.)
+// 5. Kalau kamu develop di localhost, App Check butuh "debug token": buka
+//    console browser pas dev mode, bakal muncul token debug di situ -> copy
+//    -> paste di Firebase Console -> App Check -> "Manage debug tokens".
+//
+// Catatan: site key reCAPTCHA v3 ini SAMA seperti apiKey Firebase di atas —
+// bukan rahasia, memang didesain untuk nempel di kode frontend/publik.
+// ============================================================================
+if (import.meta.env.PROD) {
+  const RECAPTCHA_SITE_KEY = 'GANTI_DENGAN_RECAPTCHA_V3_SITE_KEY';
+  if (RECAPTCHA_SITE_KEY === 'GANTI_DENGAN_RECAPTCHA_V3_SITE_KEY') {
+    console.warn(
+      '[App Check] Site key reCAPTCHA v3 belum diisi di src/firebase.js. ' +
+      'Signup/login TETAP JALAN, tapi perlindungan anti-bot belum aktif.'
+    );
+  } else {
+    try {
+      initializeAppCheck(app, {
+        provider: new ReCaptchaV3Provider(RECAPTCHA_SITE_KEY),
+        isTokenAutoRefreshEnabled: true,
+      });
+    } catch (err) {
+      console.warn('[App Check] Gagal diinisialisasi, lanjut tanpa App Check:', err);
+    }
+  }
+}
 
 export const auth = getAuth(app);
 export const db = getFirestore(app);
