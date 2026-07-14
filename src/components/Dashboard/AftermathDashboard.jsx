@@ -110,7 +110,7 @@ export default function AftermathDashboard() {
         <header>
           <div className="brand">
             <div className="mark">A.</div>
-            <h1>AFTRMTH JRNY</h1>
+            <h1>AFTERMATH</h1>
           </div>
           <div className="header-actions">
             <button className="btn" type="button" onClick={() => setAddTradeModalOpen(true)}>+ Input Trade</button>
