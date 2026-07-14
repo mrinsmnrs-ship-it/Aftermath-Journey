@@ -30,15 +30,17 @@ export default function LoginModal({ open, onClose, onLogin }) {
     >
       <div className="modal-card">
         <div className="modal-head">
-          <h2>{mode === 'signin' ? 'Sign In' : 'Sign Up'}</h2>
-          <button className="btn modal-close" onClick={handleClose} aria-label="Tutup">✕</button>
-        </div>
-        <div className="modal-body">
+          <div className="modal-head-top">
+            <h2>{mode === 'signin' ? 'Sign In' : 'Sign Up'}</h2>
+            <button className="btn modal-close" onClick={handleClose} aria-label="Tutup">✕</button>
+          </div>
           <div className="modal-sub">
             {mode === 'signin'
               ? 'Masuk ke akunmu untuk mengaktifkan auto sync data trading.'
               : 'Buat akun untuk simpan progress dan buka fitur premium nanti.'}
           </div>
+        </div>
+        <div className="modal-body">
 
           <form onSubmit={handleSubmit}>
             <div className="field">
