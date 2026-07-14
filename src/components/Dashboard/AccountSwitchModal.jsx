@@ -6,11 +6,13 @@ export default function AccountSwitchModal({ open, accounts, currentAcctId, onSe
     >
       <div className="modal-card">
         <div className="modal-head">
-          <h2>Pilih Akun</h2>
-          <button className="btn modal-close" onClick={onClose} aria-label="Tutup">✕</button>
+          <div className="modal-head-top">
+            <h2>Pilih Akun</h2>
+            <button className="btn modal-close" onClick={onClose} aria-label="Tutup">✕</button>
+          </div>
+          <div className="modal-sub">Ganti akun trading yang sedang ditampilkan.</div>
         </div>
         <div className="modal-body">
-          <div className="modal-sub">Ganti akun trading yang sedang ditampilkan.</div>
           <div className="acct-list">
             {accounts.map((a) => (
               <button
