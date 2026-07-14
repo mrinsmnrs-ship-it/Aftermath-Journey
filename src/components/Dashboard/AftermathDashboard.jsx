@@ -124,7 +124,7 @@ export default function AftermathDashboard() {
               </svg>
             </button>
             <button className="btn btn-accent" onClick={() => setConnectModalOpen(true)}>+ Connect Account</button>
-            <button className="btn btn-square" type="button" onClick={() => setLoginModalOpen(true)} aria-label="Sign in">
+            <button className="btn btn-square btn-square-blue" type="button" onClick={() => setLoginModalOpen(true)} aria-label="Sign in">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path>
                 <circle cx="12" cy="7" r="4"></circle>
@@ -156,7 +156,7 @@ export default function AftermathDashboard() {
                 <path d="M8.5 9.5l6 6"></path>
               </svg>
             </button>
-            <button className="btn btn-square" type="button" onClick={() => setLoginModalOpen(true)} aria-label="Sign in">
+            <button className="btn btn-square btn-square-blue" type="button" onClick={() => setLoginModalOpen(true)} aria-label="Sign in">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path>
                 <circle cx="12" cy="7" r="4"></circle>
@@ -229,12 +229,12 @@ export default function AftermathDashboard() {
           <div className="table-wrap">
             <table>
               <thead>
-                <tr><th>Tanggal</th><th>Pair</th><th>Arah</th><th>Size</th><th>P/L</th><th>Src</th></tr>
+                <tr><th>Tanggal</th><th>Pair</th><th>Arah</th><th>Size</th><th>P/L</th></tr>
               </thead>
               <tbody>
                 {rows.length === 0 ? (
                   <tr>
-                    <td colSpan={6} style={{ color: 'var(--ink)', textAlign: 'center', padding: '20px' }}>
+                    <td colSpan={5} style={{ color: 'var(--ink)', textAlign: 'center', padding: '20px' }}>
                       Belum ada trade di periode ini.
                     </td>
                   </tr>
@@ -246,7 +246,6 @@ export default function AftermathDashboard() {
                       <td><span className={`tag ${t.dir === 'BUY' ? 'tag-buy' : 'tag-sell'}`}>{t.dir}</span></td>
                       <td>{t.size}</td>
                       <td className={t.pl >= 0 ? 'pl-up' : 'pl-down'}>{fmtSigned(t.pl)}</td>
-                      <td className="src-auto">{t.src}</td>
                     </tr>
                   ))
                 )}
