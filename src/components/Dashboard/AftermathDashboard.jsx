@@ -5,6 +5,7 @@ import ConnectAccountModal from './ConnectAccountModal';
 import AddTradeModal from './AddTradeModal';
 import LoginModal from './LoginModal';
 import { generateInitialAccounts, genAccount, fmtMoney, fmtSigned } from '../../utils/mockAccountData';
+import { useScrollBottomCap } from '../../utils/useScrollBottomCap';
 import './AftermathDashboard.css';
 
 const PERIODS = [
@@ -81,6 +82,7 @@ export default function AftermathDashboard() {
   }, [periodTrades]);
 
   const rows = periodTrades.slice(-15).reverse();
+  const [historyRef, historyScrollable] = useScrollBottomCap([rows.length]);
 
   function handleConnect({ name, type }) {
     // NOTE: masih mock generator. Ganti bagian ini pas integrasi MetaApi asli.
@@ -266,7 +268,7 @@ export default function AftermathDashboard() {
 
         <div className="card history-card">
           <h2>Riwayat Trade</h2>
-          <div className="table-wrap">
+          <div className={`table-wrap${historyScrollable ? ' has-scroll-cap' : ''}`} ref={historyRef}>
             <table>
               <thead>
                 <tr><th>Tanggal</th><th>Pair</th><th>Arah</th><th>Size</th><th>P/L</th></tr>
@@ -291,6 +293,7 @@ export default function AftermathDashboard() {
                 )}
               </tbody>
             </table>
+            {historyScrollable && <div className="scroll-cap" aria-hidden="true" />}
           </div>
         </div>
 
