@@ -280,32 +280,32 @@ export default function AftermathDashboard() {
 
         <div className="card history-card">
           <h2>Riwayat Trade</h2>
-          <div className={`table-wrap${historyScrollable ? ' has-scroll-cap' : ''}`} ref={historyRef}>
-            <table>
-              <thead>
-                <tr><th>Tanggal</th><th>Pair</th><th>Arah</th><th>Size</th><th>P/L</th></tr>
-              </thead>
-              <tbody>
-                {rows.length === 0 ? (
-                  <tr>
-                    <td colSpan={5} style={{ color: 'var(--ink)', textAlign: 'center', padding: '20px' }}>
-                      Belum ada trade di periode ini.
-                    </td>
-                  </tr>
-                ) : (
-                  rows.map((t, i) => (
-                    <tr key={i}>
-                      <td>{t.date}</td>
-                      <td>{t.pair}</td>
-                      <td><span className={`tag ${t.dir === 'BUY' ? 'tag-buy' : 'tag-sell'}`}>{t.dir}</span></td>
-                      <td>{t.size}</td>
-                      <td className={t.pl >= 0 ? 'pl-up' : 'pl-down'}>{fmtSigned(t.pl)}</td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-            {historyScrollable && <div className="scroll-cap" aria-hidden="true" />}
+          {/* Header & garis bawah adalah elemen flex terpisah dari area scroll (bukan sticky),
+              persis kayak modal-head/modal-bottom-space, jadi 100% diem walau discroll kenceng. */}
+          <div className="history-frame">
+            <div className="history-row history-row-head" aria-hidden="true">
+              <span>Tanggal</span>
+              <span>Pair</span>
+              <span>Arah</span>
+              <span className="history-col-size">Size</span>
+              <span>P/L</span>
+            </div>
+            <div className="history-scroll" ref={historyRef}>
+              {rows.length === 0 ? (
+                <div className="history-empty">Belum ada trade di periode ini.</div>
+              ) : (
+                rows.map((t, i) => (
+                  <div className="history-row" key={i}>
+                    <span>{t.date}</span>
+                    <span>{t.pair}</span>
+                    <span><span className={`tag ${t.dir === 'BUY' ? 'tag-buy' : 'tag-sell'}`}>{t.dir}</span></span>
+                    <span className="history-col-size">{t.size}</span>
+                    <span className={t.pl >= 0 ? 'pl-up' : 'pl-down'}>{fmtSigned(t.pl)}</span>
+                  </div>
+                ))
+              )}
+            </div>
+            {historyScrollable && <div className="history-bottom-cap" aria-hidden="true" />}
           </div>
         </div>
 
