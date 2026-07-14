@@ -5,7 +5,7 @@ export default function LoginModal({ open, onClose, onLogin }) {
   const [mode, setMode] = useState('signin'); // 'signin' | 'signup'
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [bodyRef, scrollable] = useScrollBottomCap([open, mode]);
+  const [bodyRef] = useScrollBottomCap([open, mode]);
 
   function resetForm() {
     setEmail('');
@@ -42,7 +42,7 @@ export default function LoginModal({ open, onClose, onLogin }) {
               : 'Buat akun untuk simpan progress dan buka fitur premium nanti.'}
           </div>
         </div>
-        <div className={`modal-body${scrollable ? ' has-scroll-cap' : ''}`} ref={bodyRef}>
+        <div className="modal-body" ref={bodyRef}>
 
           <form onSubmit={handleSubmit}>
             <div className="field">
@@ -80,7 +80,6 @@ export default function LoginModal({ open, onClose, onLogin }) {
               <>Sudah punya akun? <button type="button" onClick={() => setMode('signin')}>Sign in</button></>
             )}
           </div>
-          {scrollable && <div className="scroll-cap" aria-hidden="true" />}
         </div>
       </div>
     </div>
