@@ -38,16 +38,18 @@
 .aftermath-dashboard .wrap{max-width:920px; margin:0 auto;}
 
 /* ---- Header ---- */
-/* Header (dan ticker di bawahnya) sengaja "bocor" keluar dari padding kiri/kanan
-   .aftermath-dashboard pakai margin negatif, jadi dua-duanya full-bleed sampai
-   ke tepi layar, sementara isi kartu di .wrap tetap kepusat kayak biasa.
-   Sticky di atas + garis pemisah biar keliatan batas dari konten yang discroll. */
+/* Header & ticker dibungkus 1 wrapper (.top-bar) yang sticky bareng, jadi
+   pas discroll dua-duanya nempel jadi satu di atas, bukan cuma headernya doang.
+   Wrapper ini juga yang "bocor" keluar dari padding kiri/kanan .aftermath-dashboard
+   pakai margin negatif, jadi full-bleed sampai ke tepi layar. */
+.aftermath-dashboard .top-bar{
+  position:sticky; top:0; z-index:20;
+  margin:calc(-1 * var(--page-pad)) calc(-1 * var(--page-pad)) 22px;
+}
 .aftermath-dashboard header{
   display:flex; align-items:center; justify-content:space-between;
   flex-wrap:wrap; gap:14px;
-  position:sticky; top:0; z-index:20;
   background:var(--paper);
-  margin:calc(-1 * var(--page-pad)) calc(-1 * var(--page-pad)) 0;
   padding:16px var(--page-pad) 14px;
   border-bottom:var(--border-w) solid var(--stroke);
 }
@@ -56,7 +58,6 @@
 .aftermath-dashboard .ticker{
   overflow:hidden;
   background:var(--ink); color:var(--paper);
-  margin:0 calc(-1 * var(--page-pad)) 22px;
   padding:7px 0;
   border-bottom:var(--border-w) solid var(--stroke);
 }
@@ -115,7 +116,7 @@
   width:38px; height:38px; padding:0; flex-shrink:0;
 }
 .aftermath-dashboard .btn-square svg{ width:18px; height:18px; }
-.aftermath-dashboard .btn-square-blue{ background:var(--login-blue); color:#FFFFFF; }
+.aftermath-dashboard .btn-square-blue{ background:var(--login-blue); color:#111111; }
 .aftermath-dashboard .btn-square-accent{ background:var(--accent); color:#111111; }
 
 /* Tombol login versi desktop: ada teksnya, ikon+teks item hitam, background tetap biru. */
@@ -287,7 +288,7 @@
 
 @media (max-width:640px){
   .aftermath-dashboard{ --page-pad:14px; padding:var(--page-pad); }
-  .aftermath-dashboard header{ margin-bottom:16px; gap:10px; }
+  .aftermath-dashboard header{ gap:10px; padding-left:10px; padding-right:10px; }
   .aftermath-dashboard .brand .mark{ width:28px; height:28px; font-size:13px; border-radius:7px; }
   .aftermath-dashboard .brand h1{ font-size:17px; }
   .aftermath-dashboard .header-actions-desktop{ display:none; }
