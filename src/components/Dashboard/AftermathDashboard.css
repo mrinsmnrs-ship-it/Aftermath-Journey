@@ -15,7 +15,7 @@
   --muted:#767672;
   --line-soft:#E4E4DE;
   --border-w:1.5px;
-  --radius:0;
+  --radius:16px;
   --stroke:#111111;
   --shadow:4px 4px 0 var(--stroke);
   --shadow-sm:3px 3px 0 var(--stroke);
@@ -44,7 +44,7 @@
 }
 .aftermath-dashboard .brand{ display:flex; align-items:center; gap:10px; }
 .aftermath-dashboard .brand .mark{
-  width:34px; height:34px; background:var(--ink); border-radius:0;
+  width:34px; height:34px; background:var(--ink); border-radius:8px;
   display:flex; align-items:center; justify-content:center;
   color:var(--paper); font-weight:700; font-size:16px;
   transform:rotate(-4deg);
@@ -56,7 +56,7 @@
 .aftermath-dashboard .acct-switch-btn{
   display:inline-flex; align-items:center; gap:9px;
   font-size:13px; font-weight:700;
-  background:var(--card); border:var(--border-w) solid var(--stroke); border-radius:0;
+  background:var(--card); border:var(--border-w) solid var(--stroke); border-radius:10px;
   padding:9px 14px;
   box-shadow:var(--shadow-sm);
   cursor:pointer; outline:none; color:var(--ink);
@@ -68,7 +68,7 @@
 
 .aftermath-dashboard .btn{
   font-weight:700; font-size:13px;
-  border:var(--border-w) solid var(--stroke); border-radius:0;
+  border:var(--border-w) solid var(--stroke); border-radius:10px;
   padding:9px 16px; cursor:pointer; background:var(--card); color:var(--ink);
   box-shadow:var(--shadow-sm);
   transition:transform .1s ease, box-shadow .1s ease;
@@ -91,7 +91,7 @@
   display:flex; align-items:center; justify-content:space-between; gap:10px;
   text-align:left; width:100%;
   font-size:13.5px; font-weight:600; color:var(--ink);
-  background:var(--card); border:var(--border-w) solid var(--stroke); border-radius:0;
+  background:var(--card); border:var(--border-w) solid var(--stroke); border-radius:12px;
   padding:13px 14px; cursor:pointer;
   box-shadow:var(--shadow-sm);
   transition:transform .1s ease, box-shadow .1s ease, background-color .12s ease;
@@ -110,7 +110,7 @@
 .aftermath-dashboard .card{
   background:var(--card);
   border:var(--border-w) solid var(--stroke);
-  border-radius:0;
+  border-radius:var(--radius);
   padding:20px;
   position:relative;
   overflow:hidden;
@@ -127,7 +127,7 @@
 .aftermath-dashboard .delta-pill{
   display:inline-flex; align-items:center; gap:5px;
   font-weight:700; font-size:13px;
-  padding:5px 10px; border-radius:0; border:var(--border-w) solid var(--stroke);
+  padding:5px 10px; border-radius:20px; border:var(--border-w) solid var(--stroke);
   margin-top:8px;
 }
 .aftermath-dashboard .delta-up{ background:var(--profit-tint); color:var(--profit-dark); }
@@ -136,7 +136,7 @@
 .aftermath-dashboard .period-toggle{ display:flex; gap:8px; height:fit-content; }
 .aftermath-dashboard .period-toggle button{
   font-size:12px; font-weight:700;
-  border:var(--border-w) solid var(--stroke); border-radius:0;
+  border:var(--border-w) solid var(--stroke); border-radius:10px;
   background:var(--card); color:var(--ink); padding:8px 12px; cursor:pointer;
   box-shadow:var(--shadow-sm);
   transition:transform .1s ease, box-shadow .1s ease, background-color .12s ease;
@@ -160,7 +160,7 @@
 .aftermath-dashboard .symbol-name{ font-weight:700; letter-spacing:.02em; }
 .aftermath-dashboard .symbol-bar-track{
   width:100%; height:12px; background:var(--paper);
-  border:var(--border-w) solid var(--stroke); border-radius:0; overflow:hidden;
+  border:var(--border-w) solid var(--stroke); border-radius:6px; overflow:hidden;
 }
 .aftermath-dashboard .symbol-bar{ height:100%; min-width:2px; }
 .aftermath-dashboard .symbol-bar-up{ background:var(--profit); }
@@ -192,7 +192,7 @@
 .aftermath-dashboard .table-wrap::-webkit-scrollbar{ width:8px; }
 .aftermath-dashboard .table-wrap::-webkit-scrollbar-track{ background:transparent; }
 .aftermath-dashboard .table-wrap::-webkit-scrollbar-thumb{
-  background:var(--stroke); border-radius:0; border:2px solid var(--card); background-clip:padding-box;
+  background:var(--stroke); border-radius:999px; border:2px solid var(--card); background-clip:padding-box;
 }
 /* Garis tipis di bawah area scroll, biar keliatan ada batas pas discroll — simpel,
    cuma garis (sama gayanya kayak border-bottom di modal-head), bukan blok warna.
@@ -204,9 +204,6 @@
   border-top:var(--border-w) solid var(--stroke);
   pointer-events:none;
 }
-/* Di dalam modal (bukan tabel riwayat), kasih sedikit napas di bawah garis cap
-   biar nggak langsung nempel ke sudut lengkung bawah modal-card. */
-.aftermath-dashboard .modal-body .scroll-cap{ height:10px; }
 .aftermath-dashboard table{ width:100%; border-collapse:collapse; font-size:12.5px; }
 .aftermath-dashboard thead tr{ background:var(--ink); }
 .aftermath-dashboard thead th{
@@ -224,7 +221,7 @@
 .aftermath-dashboard tbody td:last-child{ padding-right:30px; }
 .aftermath-dashboard tbody tr:last-child td{ border-bottom:none; }
 .aftermath-dashboard .tag{
-  display:inline-block; font-size:10px; font-weight:700; padding:2px 7px; border-radius:0;
+  display:inline-block; font-size:10px; font-weight:700; padding:2px 7px; border-radius:6px;
   border:1px solid var(--stroke); color:var(--ink);
 }
 .aftermath-dashboard .tag-buy{ background:var(--profit-tint); }
@@ -237,7 +234,7 @@
 @media (max-width:640px){
   .aftermath-dashboard{ padding:14px; }
   .aftermath-dashboard header{ margin-bottom:16px; gap:10px; }
-  .aftermath-dashboard .brand .mark{ width:28px; height:28px; font-size:13px; border-radius:0; }
+  .aftermath-dashboard .brand .mark{ width:28px; height:28px; font-size:13px; border-radius:7px; }
   .aftermath-dashboard .brand h1{ font-size:17px; }
   .aftermath-dashboard .header-actions-desktop{ display:none; }
   .aftermath-dashboard .header-actions-mobile{ display:flex; gap:8px; }
@@ -258,24 +255,19 @@
 .aftermath-dashboard .modal-overlay.open{ display:flex; }
 .aftermath-dashboard .modal-card{
   background:var(--card); border:var(--border-w) solid var(--stroke);
-  border-radius:0; padding:0; width:100%; max-width:480px;
+  border-radius:20px 20px 0 0; padding:0; width:100%; max-width:480px;
   max-height:88vh; position:relative; overflow:hidden;
   display:flex; flex-direction:column;
-  /* Paksa modal-card jadi compositing layer sendiri. Tanpa ini, child yang
-     punya transform (tombol .btn pas hover/active) bisa dipromosikan ke layer
-     GPU terpisah dan bikin mask border-radius+overflow:hidden dari parent
-     nggak ke-apply dengan bener di sebagian WebView/browser mobile — hasilnya
-     box-shadow tombol keliatan "nembus" keluar dari sudut rounded modal. */
   transform:translateZ(0);
   -webkit-transform:translateZ(0);
   isolation:isolate;
 }
 @media (min-width:640px){
   .aftermath-dashboard .modal-overlay{ align-items:center; }
-  .aftermath-dashboard .modal-card{ border-radius:0; }
+  .aftermath-dashboard .modal-card{ border-radius:var(--radius); }
 }
 .aftermath-dashboard .modal-overlay.modal-center{ align-items:center; padding:20px; }
-.aftermath-dashboard .modal-overlay.modal-center .modal-card{ border-radius:0; max-width:400px; }
+.aftermath-dashboard .modal-overlay.modal-center .modal-card{ border-radius:var(--radius); max-width:400px; }
 
 /* Header tetap nempel di atas, nggak ikut ke-scroll bareng isi form. */
 .aftermath-dashboard .modal-head{
@@ -289,7 +281,7 @@
 }
 .aftermath-dashboard .modal-head h2{ font-size:18px; }
 .aftermath-dashboard .modal-close{
-  width:32px; height:32px; padding:0; border-radius:0;
+  width:32px; height:32px; padding:0; border-radius:50%;
   display:flex; align-items:center; justify-content:center; font-size:16px; line-height:1;
 }
 
@@ -303,12 +295,17 @@
 .aftermath-dashboard .modal-body::-webkit-scrollbar{ width:8px; }
 .aftermath-dashboard .modal-body::-webkit-scrollbar-track{ background:transparent; }
 .aftermath-dashboard .modal-body::-webkit-scrollbar-thumb{
-  background:var(--stroke); border-radius:0; border:2px solid var(--card); background-clip:padding-box;
+  background:var(--stroke); border-radius:999px; border:2px solid var(--card); background-clip:padding-box;
 }
 .aftermath-dashboard .modal-body::-webkit-scrollbar-button{
   display:none; width:0; height:0;
 }
 .aftermath-dashboard .modal-sub{ font-size:12px; color:var(--ink); margin-bottom:0; }
+
+/* Buffer tetap di luar area scroll, sama konsepnya kayak padding-bottom di .card
+   buat .table-wrap: bukan bagian dari konten yang discroll, jadi selalu ada jarak
+   antara batas scroll dan sudut lengkung modal-card, nggak peduli posisi scroll. */
+.aftermath-dashboard .modal-bottom-space{ flex-shrink:0; height:20px; }
 
 .aftermath-dashboard .field-row{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
 .aftermath-dashboard .field-row .field{ margin-bottom:14px; }
@@ -328,7 +325,7 @@
 }
 .aftermath-dashboard .field input{
   width:100%; font-size:13.5px;
-  border:var(--border-w) solid var(--stroke); border-radius:0; padding:11px 12px;
+  border:var(--border-w) solid var(--stroke); border-radius:10px; padding:11px 12px;
   background:var(--card); color:var(--ink); outline:none;
 }
 .aftermath-dashboard .field input::placeholder{ color:var(--muted); }
@@ -338,7 +335,7 @@
 .aftermath-dashboard .type-toggle{ display:flex; gap:8px; }
 .aftermath-dashboard .type-toggle button{
   flex:1; font-weight:700; font-size:13px;
-  border:var(--border-w) solid var(--stroke); border-radius:0; background:var(--card); color:var(--ink);
+  border:var(--border-w) solid var(--stroke); border-radius:10px; background:var(--card); color:var(--ink);
   padding:10px; cursor:pointer; box-shadow:var(--shadow-sm);
   transition:transform .1s ease, box-shadow .1s ease, background-color .12s ease;
 }
@@ -349,7 +346,7 @@
 .aftermath-dashboard .submit-btn{ width:100%; padding:13px; font-size:14px; margin-top:6px; text-align:center; }
 .aftermath-dashboard .security-note{
   display:flex; gap:8px; align-items:flex-start; margin-top:16px; padding:11px 12px;
-  border:1px solid var(--line-soft); border-radius:0; font-size:11px; color:var(--ink); line-height:1.5;
+  border:1px solid var(--line-soft); border-radius:10px; font-size:11px; color:var(--ink); line-height:1.5;
 }
 
 .aftermath-dashboard .login-switch{
