@@ -126,6 +126,14 @@
   background:var(--login-blue); color:#111111;
 }
 .aftermath-dashboard .btn-login svg{ width:16px; height:16px; flex-shrink:0; }
+.aftermath-dashboard .btn-login-email{
+  max-width:150px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+.aftermath-dashboard .btn-square-green{ background:var(--profit); color:#111111; }
+.aftermath-dashboard .sync-error-banner{
+  background:var(--loss-tint); border:var(--border-w) solid var(--stroke); color:var(--loss-dark);
+  border-radius:10px; padding:10px 14px; font-size:12.5px; font-weight:600; margin-bottom:16px;
+}
 
 /* ---- Account switch popup ---- */
 .aftermath-dashboard .acct-list{ display:flex; flex-direction:column; gap:9px; margin-top:4px; }
@@ -411,6 +419,7 @@
 .aftermath-dashboard .type-toggle button.active{ background:var(--ink); color:var(--paper); }
 
 .aftermath-dashboard .submit-btn{ width:100%; padding:13px; font-size:14px; margin-top:6px; text-align:center; }
+.aftermath-dashboard .submit-btn:disabled{ opacity:.6; cursor:not-allowed; }
 .aftermath-dashboard .security-note{
   display:flex; gap:8px; align-items:flex-start; margin-top:16px; padding:11px 12px 0;
   font-size:11px; color:var(--ink); line-height:1.5;
