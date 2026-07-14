@@ -53,9 +53,10 @@ export default function EquityChart({ slice }) {
           d={path}
           fill="none"
           stroke={isUp ? 'var(--profit-dark)' : 'var(--loss-dark)'}
-          strokeWidth="2"
+          strokeWidth="2.5"
           strokeLinecap="round"
           strokeLinejoin="round"
+          vectorEffect="non-scaling-stroke"
         />
       </svg>
     </div>
