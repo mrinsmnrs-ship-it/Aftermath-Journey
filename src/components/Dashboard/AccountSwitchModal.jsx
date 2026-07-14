@@ -1,7 +1,9 @@
 import { useScrollBottomCap } from '../../utils/useScrollBottomCap';
+import { useBodyScrollLock } from '../../utils/useBodyScrollLock';
 
 export default function AccountSwitchModal({ open, accounts, currentAcctId, onSelect, onClose }) {
   const [bodyRef] = useScrollBottomCap([accounts.length, open]);
+  useBodyScrollLock(open);
   return (
     <div
       className={`modal-overlay modal-center ${open ? 'open' : ''}`}
