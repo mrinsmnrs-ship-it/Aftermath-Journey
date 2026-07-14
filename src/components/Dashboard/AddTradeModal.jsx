@@ -291,6 +291,7 @@ export default function AddTradeModal({ open, onClose, onAddTrade }) {
         </form>
         {scrollable && <div className="scroll-cap" aria-hidden="true" />}
         </div>
+        <div className="modal-bottom-space" aria-hidden="true" />
       </div>
     </div>
   );
