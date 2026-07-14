@@ -3,16 +3,16 @@ import { useBodyScrollLock } from '../../utils/useBodyScrollLock';
 
 export default function ConnectAccountModal({ open, onClose, onConnect }) {
   const [nickname, setNickname] = useState('');
+  const [type, setType] = useState('Funded');
   const [accountId, setAccountId] = useState('');
   const [token, setToken] = useState('');
-  const [type, setType] = useState('Funded');
   useBodyScrollLock(open);
 
   function resetForm() {
     setNickname('');
+    setType('Funded');
     setAccountId('');
     setToken('');
-    setType('Funded');
   }
 
   function handleClose() {
@@ -23,7 +23,10 @@ export default function ConnectAccountModal({ open, onClose, onConnect }) {
   function handleSubmit(e) {
     e.preventDefault();
     const name = nickname.trim() || 'Akun Baru';
-    onConnect({ name, type, accountId, token });
+    // NOTE: accountId & token belum dipakai — integrasi MetaApi asli belum ada.
+    // Field-nya sengaja tetap ditampilkan (tapi disabled) supaya strukturnya udah
+    // siap begitu backend real-nya jadi; tinggal lepas `disabled` di bawah + connect ke API.
+    onConnect({ name, type });
     resetForm();
   }
 
@@ -35,10 +38,10 @@ export default function ConnectAccountModal({ open, onClose, onConnect }) {
       <div className="modal-card">
         <div className="modal-head">
           <div className="modal-head-top">
-            <h2>Connect Account</h2>
+            <h2>Tambah Akun (Demo)</h2>
             <button className="btn modal-close" onClick={handleClose} aria-label="Tutup">✕</button>
           </div>
-          <div className="modal-sub">Hubungkan akun MT4/MT5 kamu lewat MetaApi. Sekali connect, data auto-sync.</div>
+          <div className="modal-sub">Integrasi MetaApi/MT4/MT5 asli belum tersedia. Fitur ini men-generate data trading simulasi biar kamu bisa coba-coba tampilan dashboard.</div>
         </div>
         <div className="modal-body modal-body-static">
 
@@ -66,6 +69,19 @@ export default function ConnectAccountModal({ open, onClose, onConnect }) {
             </div>
           </div>
 
+          <div className="field-section-title" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            Integrasi MetaApi
+            <span
+              style={{
+                fontSize: '9.5px', fontWeight: 700, textTransform: 'uppercase',
+                letterSpacing: '.04em', padding: '2px 7px', borderRadius: '999px',
+                background: 'var(--profit-tint)', color: 'var(--profit-dark)',
+              }}
+            >
+              Segera Hadir
+            </span>
+          </div>
+
           <div className="field">
             <label htmlFor="fAccountId">MetaApi Account ID</label>
             <input
@@ -73,7 +89,8 @@ export default function ConnectAccountModal({ open, onClose, onConnect }) {
               id="fAccountId"
               value={accountId}
               onChange={(e) => setAccountId(e.target.value)}
-              required
+              placeholder="Belum aktif"
+              disabled
             />
           </div>
 
@@ -84,20 +101,25 @@ export default function ConnectAccountModal({ open, onClose, onConnect }) {
               id="fToken"
               value={token}
               onChange={(e) => setToken(e.target.value)}
-              required
+              placeholder="Belum aktif"
+              disabled
             />
-            <div className="field-hint">Token dikirim langsung ke server, tidak pernah disimpan di browser.</div>
+            <div className="field-hint">
+              Field ini belum tersambung ke backend apa pun — isian di sini nggak dipakai/dikirim kemana-mana.
+              Sementara data akun di-generate simulasi berdasarkan Nama &amp; Tipe Akun di atas.
+            </div>
           </div>
 
-          <button type="submit" className="btn btn-accent submit-btn">Connect & Sync</button>
+          <button type="submit" className="btn btn-accent submit-btn">Generate Akun Demo</button>
         </form>
 
         <div className="security-note">
           <svg className="security-note-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <rect x="5" y="11" width="14" height="10" rx="2"></rect>
-            <path d="M8 11V7a4 4 0 018 0v4"></path>
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 8v4"></path>
+            <path d="M12 16h.01"></path>
           </svg>
-          <span>Token disimpan terenkripsi di server. Kamu bisa putuskan koneksi kapan saja.</span>
+          <span>Mode demo: data equity dan riwayat trade di sini di-generate acak di perangkatmu sendiri, bukan data asli dari broker. Belum ada koneksi ke MetaApi atau MT4/MT5.</span>
         </div>
         </div>
       </div>
