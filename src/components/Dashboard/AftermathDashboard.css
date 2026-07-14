@@ -19,11 +19,12 @@
   --stroke:#111111;
   --shadow:4px 4px 0 var(--stroke);
   --shadow-sm:3px 3px 0 var(--stroke);
+  --page-pad:20px;
 
   background:var(--paper);
   color:var(--ink);
   font-family:'Inter', sans-serif;
-  padding:20px;
+  padding:var(--page-pad);
   min-height:100vh;
   transition:background-color .2s ease, color .2s ease;
 }
@@ -37,17 +38,42 @@
 .aftermath-dashboard .wrap{max-width:920px; margin:0 auto;}
 
 /* ---- Header ---- */
-/* Sticky di atas + garis pemisah biar keliatan batas dari konten yang discroll.
-   background diset sama kayak warna halaman (--paper) biar konten di belakangnya
-   ketutup rapi pas header nempel di atas. */
+/* Header (dan ticker di bawahnya) sengaja "bocor" keluar dari padding kiri/kanan
+   .aftermath-dashboard pakai margin negatif, jadi dua-duanya full-bleed sampai
+   ke tepi layar, sementara isi kartu di .wrap tetap kepusat kayak biasa.
+   Sticky di atas + garis pemisah biar keliatan batas dari konten yang discroll. */
 .aftermath-dashboard header{
   display:flex; align-items:center; justify-content:space-between;
   flex-wrap:wrap; gap:14px;
   position:sticky; top:0; z-index:20;
   background:var(--paper);
-  padding:16px 0 14px;
-  margin:-16px 0 22px;
+  margin:calc(-1 * var(--page-pad)) calc(-1 * var(--page-pad)) 0;
+  padding:16px var(--page-pad) 14px;
   border-bottom:var(--border-w) solid var(--stroke);
+}
+
+/* ---- Ticker (running text) ---- */
+.aftermath-dashboard .ticker{
+  overflow:hidden;
+  background:var(--ink); color:var(--paper);
+  margin:0 calc(-1 * var(--page-pad)) 22px;
+  padding:7px 0;
+  border-bottom:var(--border-w) solid var(--stroke);
+}
+.aftermath-dashboard .ticker-track{
+  display:flex; width:max-content;
+  animation:aftermath-ticker-scroll 24s linear infinite;
+}
+.aftermath-dashboard .ticker-track span{
+  white-space:nowrap; font-size:11px; font-weight:600; letter-spacing:.02em;
+  padding-right:56px;
+}
+@keyframes aftermath-ticker-scroll{
+  from{ transform:translateX(0); }
+  to{ transform:translateX(-50%); }
+}
+@media (prefers-reduced-motion:reduce){
+  .aftermath-dashboard .ticker-track{ animation:none; }
 }
 .aftermath-dashboard .brand{ display:flex; align-items:center; gap:10px; }
 .aftermath-dashboard .brand .mark{
@@ -91,6 +117,13 @@
 .aftermath-dashboard .btn-square svg{ width:18px; height:18px; }
 .aftermath-dashboard .btn-square-blue{ background:var(--login-blue); color:#FFFFFF; }
 .aftermath-dashboard .btn-square-accent{ background:var(--accent); color:#111111; }
+
+/* Tombol login versi desktop: ada teksnya, ikon+teks item hitam, background tetap biru. */
+.aftermath-dashboard .btn-login{
+  display:inline-flex; align-items:center; gap:8px;
+  background:var(--login-blue); color:#111111;
+}
+.aftermath-dashboard .btn-login svg{ width:16px; height:16px; flex-shrink:0; }
 
 /* ---- Account switch popup ---- */
 .aftermath-dashboard .acct-list{ display:flex; flex-direction:column; gap:9px; margin-top:4px; }
@@ -253,7 +286,7 @@
 .aftermath-dashboard footer{ text-align:center; margin-top:20px; color:var(--ink); font-size:11.5px; opacity:.7; }
 
 @media (max-width:640px){
-  .aftermath-dashboard{ padding:14px; }
+  .aftermath-dashboard{ --page-pad:14px; padding:var(--page-pad); }
   .aftermath-dashboard header{ margin-bottom:16px; gap:10px; }
   .aftermath-dashboard .brand .mark{ width:28px; height:28px; font-size:13px; border-radius:7px; }
   .aftermath-dashboard .brand h1{ font-size:17px; }
