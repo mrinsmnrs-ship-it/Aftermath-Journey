@@ -125,7 +125,8 @@ export default function AftermathDashboard() {
 
   return (
     <div className="aftermath-dashboard">
-      <header>
+      <div className="top-bar">
+        <header>
         <div className="brand">
           <div className="mark">A.</div>
           <h1>AFTERMATH</h1>
@@ -182,12 +183,13 @@ export default function AftermathDashboard() {
             </svg>
           </button>
         </div>
-      </header>
+        </header>
 
-      <div className="ticker" aria-hidden="true">
-        <div className="ticker-track">
-          <span>{tickerText}</span>
-          <span>{tickerText}</span>
+        <div className="ticker" aria-hidden="true">
+          <div className="ticker-track">
+            <span>{tickerText}</span>
+            <span>{tickerText}</span>
+          </div>
         </div>
       </div>
 
