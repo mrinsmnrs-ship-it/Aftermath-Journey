@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { useScrollBottomCap } from '../../utils/useScrollBottomCap';
+import { useBodyScrollLock } from '../../utils/useBodyScrollLock';
 
 export default function LoginModal({ open, onClose, onLogin }) {
   const [mode, setMode] = useState('signin'); // 'signin' | 'signup'
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [bodyRef] = useScrollBottomCap([open, mode]);
+  useBodyScrollLock(open);
 
   function resetForm() {
     setEmail('');
