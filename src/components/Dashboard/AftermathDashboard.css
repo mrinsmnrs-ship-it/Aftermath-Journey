@@ -305,7 +305,10 @@
 /* Buffer tetap di luar area scroll, sama konsepnya kayak padding-bottom di .card
    buat .table-wrap: bukan bagian dari konten yang discroll, jadi selalu ada jarak
    antara batas scroll dan sudut lengkung modal-card, nggak peduli posisi scroll. */
-.aftermath-dashboard .modal-bottom-space{ flex-shrink:0; height:20px; }
+.aftermath-dashboard .modal-bottom-space{
+  flex-shrink:0; height:20px;
+  border-top:var(--border-w) solid var(--stroke);
+}
 
 .aftermath-dashboard .field-row{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
 .aftermath-dashboard .field-row .field{ margin-bottom:14px; }
